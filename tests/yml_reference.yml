@@ -1,0 +1,9 @@
+Energy_Balance_RACMO:
+  module: energy/energy.py
+  references:
+    - data/racmo/Noel2015.bib
+    - data/cism/glissade/cism-glissade.bib
+    - data/e3sm/Evans2019.bib
+    - data/livvkit.bib
+  scale: 1e-06
+  scale_aavg: 365 * 3600 * 24
