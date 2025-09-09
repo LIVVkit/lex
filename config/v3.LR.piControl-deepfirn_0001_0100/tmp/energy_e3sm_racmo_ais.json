@@ -1,0 +1,252 @@
+{
+    "Energy_Balance_RACMO_AIS": {
+        "module": "energy/energy.py",
+        "references": [
+            "data/racmo/Noel2015.bib",
+            "data/cism/glissade/cism-glissade.bib",
+            "data/e3sm/Evans2019.bib",
+            "data/livvkit.bib"
+        ],
+        "meta": {
+            "Case ID": [
+                "v3.LR.piControl-deepfirn"
+            ],
+            "Climatology years": [
+                "1980-2020"
+            ],
+            "Model": [
+                "E3SM-ELM"
+            ]
+        },
+        "img_height": 300,
+        "climo": "/pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn/v3.LR.piControl-deepfirn.{clim}_mean.nc",
+        "climo_remap": "/pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn/remap/v3.LR.piControl-deepfirn.{clim}_mean_rcmais.nc",
+        "lnd_climo": "/pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn/v3.LR.piControl-deepfirn.ANN_mean.nc",
+        "glc_surf": "/pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn/v3.LR.piControl-deepfirn.ANN_mean.nc",
+        "aavg": "data/e3sm/lnd/20240524.IGELM_MLI.ne30pg2_r05_IcoswISC30E3r5_gis1to10r02.pm-cpu.gnu.1k_spin_1990_2022_{clim}_1990{m_s:02d}_2021{m_e:02d}_climo_gis_mask2_aavg.nc",
+        "latlon": "/pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn/v3.LR.piControl-deepfirn.ANN_mean.nc",
+        "elevation": "/pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn/v3.LR.piControl-deepfirn.ANN_mean.nc",
+        "latv": "lat",
+        "lonv": "lon",
+        "topov": "topo",
+        "landfracv": "landfrac",
+        "maskv": "gis_mask2",
+        "icesheet": "ais",
+        "dataset_names": {
+            "model": "ELM",
+            "dset_a": "RACMO 2.4"
+        },
+        "scales": {
+            "model": 1,
+            "dset_a": 1
+        },
+        "clim_years": {
+            "dset_a": {
+                "year_s": 1980,
+                "year_e": 2020
+            }
+        },
+        "data_vars": [
+            {
+                "dset_a": "tas",
+                "dset_b": "TSA",
+                "model": "TSA",
+                "title": "Surface temperature",
+                "sign": 1,
+                "scales": {
+                    "dset_a": 1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "K"
+            },
+            {
+                "title": "Albedo",
+                "dset_a": [
+                    "/",
+                    "rsusgl",
+                    "rsds"
+                ],
+                "dset_b": [
+                    "/",
+                    [
+                        "+",
+                        "FSRND",
+                        "FSRVD"
+                    ],
+                    [
+                        "+",
+                        "FSDSVD",
+                        "FSDSND"
+                    ]
+                ],
+                "model": [
+                    "/",
+                    [
+                        "+",
+                        "FSRND",
+                        "FSRVD"
+                    ],
+                    [
+                        "+",
+                        "FSDSVD",
+                        "FSDSND"
+                    ]
+                ],
+                "sign": 1,
+                "scales": {
+                    "dset_a": 1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "unitless",
+                "cmin": 0.60,
+                "cmax": 0.90,
+                "cmin_d": -0.2,
+                "cmax_d": 0.2
+            },
+            {
+                "dset_a": [
+                    "-",
+                    "rsds",
+                    "rsusgl"
+                ],
+                "dset_b": "FSA",
+                "model": "FSA",
+                "title": "Shortwave net",
+                "comment": " (Positive to surface)",
+                "sign": 1,
+                "scales": {
+                    "dset_a": 1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "W m^-2"
+            },
+            {
+                "dset_a": "rsds",
+                "dset_b": "FSDS",
+                "model": "FSDS",
+                "title": "Shortwave down",
+                "sign": 1,
+                "scales": {
+                    "dset_a": 1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "W m^-2"
+            },
+            {
+                "dset_a": "strgl",
+                "dset_b": "FIRA",
+                "model": "FIRA",
+                "title": "Longwave net",
+                "comment": " (Positive to atmosphere)",
+                "sign": 1,
+                "scales": {
+                    "dset_a": -1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "W m^-2"
+            },
+            {
+                "dset_a": "rlds",
+                "dset_b": "FLDS",
+                "model": "FLDS",
+                "title": "Longwave down",
+                "sign": 1,
+                "scales": {
+                    "dset_a": 1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "W m^-2"
+            },
+            {
+                "dset_a": "hfssgl",
+                "dset_b": "FSH",
+                "model": "FSH",
+                "title": "Sensible heat",
+                "comment": " (Positive to atmosphere)",
+                "sign": 1,
+                "scales": {
+                    "dset_a": -1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "W m^-2"
+            },
+            {
+                "dset_a": "hflsgl",
+                "dset_b": "EFLX_LH_TOT",
+                "model": "EFLX_LH_TOT",
+                "title": "Latent Heat Flux",
+                "comment": " (Positive to atmosphere)",
+                "sign": 1,
+                "scales": {
+                    "dset_a": -1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "W m^-2"
+            },
+            {
+                "title": "Net energy balance",
+                "dset_a": [
+                    "+",
+                    [
+                        "-",
+                        "rsds",
+                        "rsusgl"
+                    ],
+                    [
+                        "+",
+                        "strgl",
+                        [
+                            "+",
+                            "hfssgl",
+                            "hflsgl"
+                        ]
+                    ]
+                ],
+                "model": [
+                    "-",
+                    "FSA",
+                    [
+                        "+",
+                        "FIRA",
+                        [
+                            "+",
+                            "FSH",
+                            "EFLX_LH_TOT"
+                        ]
+                    ]
+                ],
+                "sign": 1,
+                "scales": {
+                    "dset_a": 1,
+                    "dset_b": 1,
+                    "model": 1
+                },
+                "units": "W m^-2",
+                "cmin": -10,
+                "cmax": 10,
+                "cmap": "RdBu_r"
+            }
+        ],
+        "in_dirs": {
+            "dset_a": "/global/cfs/cdirs/fanssie/racmo/2.4.1/clm/{_var}"
+        },
+        "file_patterns": {
+            "dset_a": "{_var}_{icesheet}_{season}_{sea_s}_{sea_e}_climo.nc"
+        },
+        "masks": {
+            "dset_a": "/global/cfs/cdirs/e3sm/zender/grids/msk_ais_r025_rcm.nc",
+            "model": "/global/cfs/cdirs/e3sm/zender/grids/msk_ais_r025_rcm.nc"
+        },
+        "desc": "Surface energy balance component {component}{comment} from {data_var_names}",
+        "cmap": "plasma",
+        "cmap_diff": "RdBu_r"
+    }
+}

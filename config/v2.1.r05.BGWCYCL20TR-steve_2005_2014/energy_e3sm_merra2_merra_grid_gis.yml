@@ -1,0 +1,115 @@
+Energy_Balance_MERRA2_GIS:
+  module: lex/energy/energy.py
+  references: [data/racmo/Noel2015.bib,/global/cfs/cdirs/e3sm/livvkit/data/cism/glissade/cism-glissade.bib,/global/cfs/cdirs/e3sm/livvkit/data/e3sm/Evans2019.bib,
+   /global/cfs/cdirs/e3sm/livvkit/data/livvkit.bib]
+  meta:
+    Case ID: [v2.1.r05.BGWCYCL20TR-steve_2005_2014]
+    Climatology years: [1980-2020]
+    Model: [E3SM-ELM]
+  img_height: 300
+  climo: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.BGWCYCL20TR-steve_2005_2014/v2.1.r05.BGWCYCL20TR-steve_2005_2014.{clim}_mean.nc
+  climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.BGWCYCL20TR-steve_2005_2014/remap/v2.1.r05.BGWCYCL20TR-steve_2005_2014.{clim}_mean_merra2.nc
+  lnd_climo: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.BGWCYCL20TR-steve_2005_2014/remap/v2.1.r05.BGWCYCL20TR-steve_2005_2014.ANN_mean_merra2.nc
+  glc_surf: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.BGWCYCL20TR-steve_2005_2014/remap/v2.1.r05.BGWCYCL20TR-steve_2005_2014.ANN_mean_merra2.nc
+  aavg: /global/cfs/cdirs/e3sm/livvkit/data/e3sm/lnd/20240524.IGELM_MLI.ne30pg2_r05_IcoswISC30E3r5_gis1to10r02.pm-cpu.gnu.1k_spin_1990_2022_{clim}_1990{m_s:02d}_2021{m_e:02d}_climo_gis_mask2_aavg.nc
+  latlon: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.BGWCYCL20TR-steve_2005_2014/remap/v2.1.r05.BGWCYCL20TR-steve_2005_2014.ANN_mean_merra2.nc
+  elevation: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.BGWCYCL20TR-steve_2005_2014/remap/v2.1.r05.BGWCYCL20TR-steve_2005_2014.ANN_mean_merra2.nc
+  latv: lat
+  lonv: lon
+  topov: topo
+  landfracv: landfrac
+  mask_ocean: {model_native: false, model_remap: true, dset_a: true}
+  maskv: gis_mask2
+  dataset_names: {model_remap: 'ELM [MERRA2 Grid]', model_native: ELM, dset_a: MERRA2}
+  aavg_sort: [ELM, 'ELM [MERRA2 Grid]', MERRA2]
+  scales: {model: 1, dset_a: 1}
+  data_vars:
+  - dset_a: tas
+    dset_b: TSA
+    model: TSA
+    title: Surface temperature
+    sign: 1
+    scales: {dset_a: 1, dset_b: 1, model: 1}
+    units: K
+  - title: Albedo
+    dset_a: [/, rsus, rsds]
+    model:
+    - /
+    - [+, FSRND, FSRVD]
+    - [+, FSDSVD, FSDSND]
+    sign: 1
+    scales: {dset_a: 1, model: 1}
+    units: unitless
+    cmin: 0.5
+    cmax: 0.83
+    cmin_d: -0.2
+    cmax_d: 0.2
+  - dset_a: ['-', rsds, rsus]
+    model: FSA
+    title: Shortwave net
+    comment: ' (Positive to surface)'
+    sign: 1
+    scales: {dset_a: 1, model: 1}
+    units: W m^-2
+  - dset_a: rsds
+    model: FSDS
+    title: Shortwave down
+    sign: 1
+    scales: {dset_a: 1, model: 1}
+    units: W m^-2
+  - dset_a: ['-', rlus, rlds]
+    model: FIRA
+    title: Longwave net
+    comment: ' (Positive to atmosphere)'
+    sign: 1
+    scales: {dset_a: 1, model: 1}
+    units: W m^-2
+  - dset_a: rlds
+    model: FLDS
+    title: Longwave down
+    sign: 1
+    scales: {dset_a: 1, model: 1}
+    units: W m^-2
+  - dset_a: hfss
+    dset_b: FSH
+    model: FSH
+    title: Sensible heat
+    comment: ' (Positive to atmosphere)'
+    sign: 1
+    scales: {dset_a: 1, dset_b: 1, model: 1}
+    units: W m^-2
+  - dset_a: hfls
+    dset_b: EFLX_LH_TOT
+    model: EFLX_LH_TOT
+    title: Latent Heat Flux
+    comment: ' (Positive to atmosphere)'
+    sign: 1
+    scales: {dset_a: 1, dset_b: 1, model: 1}
+    units: W m^-2
+  - title: Net energy balance
+    dset_a:
+    - '-'
+    - ['-', rsds, rsus]
+    - - +
+      - ['-', rlus, rlds]
+      - [+, hfss, hfls]
+    model:
+    - '-'
+    - FSA
+    - - +
+      - FIRA
+      - [+, FSH, EFLX_LH_TOT]
+    sign: 1
+    scales: {dset_a: 1, dset_b: 1, model: 1}
+    units: W m^-2
+    cmin: -10
+    cmax: 10
+    cmap: RdBu_r
+  in_dirs: {dset_a: /pscratch/sd/m/mek/lex/data/MERRA2}
+  file_patterns: {dset_a: 'MERRA2_{season}_climo.nc'}
+  masks: {dset_a: /pscratch/sd/m/mek/lex/data/grids/msk_gis_r025_remap_merra2.traave.20250124.nc,
+    model_remap: /pscratch/sd/m/mek/lex/data/grids/msk_gis_r025_remap_merra2.traave.20250124.nc,
+    model_native: /pscratch/sd/m/mek/lex/data/grids/msk_gis_rcm_r05.nc}
+  desc: Surface energy balance component {component}{comment} from {data_var_names}
+  cmap: plasma
+  cmap_diff: RdBu_r

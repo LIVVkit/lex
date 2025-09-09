@@ -1,0 +1,62 @@
+# Climatic mass balance variables for dset_a: RACMO 2.4, model: ELM
+
+# Climatic mass balance
+- title: Climatic Mass Balance
+  dset_a: ["-", "prgl", ["-", "totrunoff", "sublgl"]]
+  model: ["-", ["+", "SNOW", "RAIN"], ["+", "QRUNOFF", "QSOIL"]]
+  ac_contrib_sign: { model: 1, dset_a: 1, }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  units: mm w. e. yr^-1
+  mask_weight: true
+  primary_var: true
+
+# Snowfall
+- title: Snowfall
+  dset_a: sf
+  model: SNOW
+  ac_contrib_sign: { model: 1, dset_a: 1, }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  units: mm w. e. yr^-1
+  cmap: YlGnBu
+  cmin: 0
+  mask_weight: true
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600, }
+
+# Rainfall
+- title: Rain
+  dset_a: [+, crrate, lsrrate]
+  model: RAIN
+  ac_contrib_sign: { model: 1, dset_a: 1, }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  units: mm w. e. yr^-1
+  cmap: YlGnBu
+  cmin: 0
+  mask_weight: true
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600, }
+
+# Runoff
+- title: Runoff
+  dset_a: totrunoff
+  model: QRUNOFF
+  ac_contrib_sign: { model: -1, dset_a: -1, }
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600, }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  mask_weight: true
+  units: mm w. e. yr^-1
+  cmin: 0
+  cmap: YlGnBu
+
+# Sublimation
+- title: Sublimation
+  dset_a: sublgl
+  model: QSOIL
+  comment: " (Positive to atmosphere)"
+  ac_contrib_sign: { model: -1, dset_a: 1, }
+  scales:
+    { model: 365 * 24 * 3600, dset_a: -365 * 24 * 3600,  }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  mask_weight: true
+  units: mm w. e. yr^-1

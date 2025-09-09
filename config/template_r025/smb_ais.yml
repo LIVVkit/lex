@@ -1,0 +1,112 @@
+Surface_Mass_Balance_AIS:
+  # This is the Python module file which will be called by LIVVkit, relative to the path
+  # where livvkit is invoked (in this case livv is run from $HOME/lex, where smb is a subdirectory of this)
+  module: lex/smb/smb_icecores.py
+
+  # Include these references as part of references tab
+  References: [/global/cfs/cdirs/e3sm/livvkit/data/smb/smb_icecores.bib,/global/cfs/cdirs/e3sm/livvkit/data/livvkit.bib]
+
+  # Case metadata, including case name, years, and model name
+  # The model name should be either E3SM-ELM or E3SM-MALI (for now...)
+  meta:
+    Case ID: [CASE_ID]
+    Climatology years: [1980-2020]
+    Model: [E3SM-ELM]
+
+  # Location of native grid climatology files (clim is ANN, DJF, MAM, ... or, 01, 02, ...)
+  climo: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.{clim}_mean.nc
+  # Location of re-mapped to RACMO climatology file
+  climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/remap/CASE_ID.{clim}_mean_rcmais.nc
+
+  # Some of the legacy SMB scripts have the ability to have lat/lon, eleveation, and topography
+  # split into multiple files. Effectively these are all the same within the new livvkit post-processing
+  # workflow, but have not been changed for the legacy code yet 
+  latlon: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  elevation: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  topo: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  # Allow different variable names for latitude / longitude
+  latv: lat
+  lonv: lon
+
+  # Also legacy code holdovers for the SMB, topography, landfrac, and mask variable names
+  smbv: QICE
+  topov: topo
+  landfracv: landfrac
+  maskv: ais_mask2
+  smbscale: 31536000
+
+  # Future location for pre-processing observations to model gridded data for AIS
+  preprocess: []
+
+  # Human readable names for the datasets, for comparison to second 
+  # obs / reanalysis dataset add dset_b definitions
+  dataset_names: { model: ELM, dset_a: RACMO 2.4 }
+
+  # Human readable names for the datasets, for comparison to second 
+  # obs / reanalysis dataset add dset_b definitions
+  clim_years:
+    dset_a: { year_s: 1980, year_e: 2020 }
+
+  # Default scaling factor for each dataset, used if its not defined for the field smb_vars.yml
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600 }
+
+  # Short name for which ice sheet is being plotted
+  icesheet: ais
+
+  # Definition of the data variables for this comparison, for the !include to work,
+  # the file is relative to the `livv` execution (e.g. running livv from $HOME/lex)
+  # then the file is in ${HOME}/lex/config/smb_vars.yml
+  data_vars: !include config/smb_vars.yml
+
+  # TODO: remove these, probably not used, but needs to be tested
+  # vars:
+  #   {
+  #     rain: RAIN,
+  #     snow: SNOW,
+  #     melt: QICE_MELT,
+  #     runoff: QRUNOFF,
+  #     freeze: QICE_FRZ,
+  #   }
+
+  # Path to the full time series files for each data set
+  timeseries_dirs:
+    {
+      model: "/global/cfs/projectdirs/e3sm/zender/livvkit",
+      dset_a: "/global/cfs/cdirs/fanssie/racmo/2.4.1/ts",
+    }
+  ts_file_patterns:
+    {
+      model: "CASE_ID.nc",
+      dset_a: "{_var}_{icesheet}_{year_s}01_{year_e}12.nc",
+    }
+
+  # Directory for the reanalysis data, model data is defined above by climo / climo_remap
+  in_dirs: { dset_a: "/global/cfs/cdirs/fanssie/racmo/2.4.1/clm/{_var}" }
+
+  file_patterns:
+    { dset_a: "{_var}_{icesheet}_{season}_{sea_s}_{sea_e}_climo.nc" }
+
+
+  # Locations for mask files, since model is remapped to `dset_a's` grid, 
+  # the model: ... file is for this grid, while model_native is for the
+  # model's grid (e.g. r025, r05, etc.)
+  masks:
+    {
+      dset_a: /global/cfs/cdirs/e3sm/zender/grids/msk_ais_r025_rcm.nc,
+      model: /global/cfs/cdirs/e3sm/zender/grids/msk_ais_r025_rcm.nc,
+      model_native: /pscratch/sd/m/mek/lex/data/grids/msk_ais_rcm_r025.nc,
+    }
+
+  # Appears in the image caption on output website
+  desc: "{component} component of SMB from {data_var_names}"
+
+
+  # Default colourmaps for this comparison, and differences, mostly
+  # this is overridden by the individual fields
+  cmap: BrBG
+  cmap_diff: BrBG
+
+  # If not overridden by the field configuration in smb_vars.yml, should
+  # the shading be symmetric about 0
+  clim_even: true

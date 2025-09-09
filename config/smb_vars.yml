@@ -1,0 +1,120 @@
+# Surface mass balance variables for dset_a: RACMO 2.4, model: ELM
+# Each field must have:
+#   - title: Human readable field name
+#   - dset_a: definition for the field in dset_a dataset (i.e. RACMO)
+#   - model: definition for the field in model dataset (i.e. ELM)
+#   - units: Units of this field
+#   - ac_contrib_sign: For each dataset, multiply the annual cycle by +/- 1 to achieve 
+#                      correct contribution to annual cycle of SMB
+#   - aavg: parameters for ice sheet-area-averaging
+#       - scale: Further scale the area-average, (this typically converts mm w.e./yr to GT/yr)
+#       - units: Units of area average (only applicable if different than units for the field)
+#       - sum: Perform area-weighted sum if true (area weighted mean if false)
+
+# Additional parameters which may be defined are:
+#   - mask_weight: mask variable acts as a weight (e.g. partial mask at edge of the ice sheet)
+#   - primary_var: True for the primary field of interest for an annual cycle plot
+#   - cmap: Override for colourmap for the fields
+#   - cmap_diff: Override for colourmap for the difference plot
+#   - cmin, cmax, cmin_d, cmax_d: Override for min / max values for fields and differences respectively
+#   - comment: added to figure caption on output (usually used to indicate signedness of fluxes)
+
+# Surface mass balance
+- title: Surface Mass Balance
+  dset_a: smbgl
+  model: QICE
+  ac_contrib_sign: { model: 1, dset_a: 1 }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  units: mm w. e. yr^-1
+  mask_weight: true
+  primary_var: true
+
+# Total precipitation
+- title: Total precip
+  dset_a: prgl
+  model: [+, SNOW, RAIN]
+  ac_contrib_sign: { model: 1, dset_a: 1 }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  units: mm w. e. yr^-1
+  cmap: YlGnBu
+  cmin: 0
+  mask_weight: true
+
+# Snowfall
+- title: Snowfall
+  dset_a: sf
+  model: SNOW
+  ac_contrib_sign: { model: 1, dset_a: 1 }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  units: mm w. e. yr^-1
+  cmap: YlGnBu
+  cmin: 0
+  mask_weight: true
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600, }
+
+# Rainfall
+- title: Rain
+  dset_a: [+, crrate, lsrrate]
+  model: RAIN
+  ac_contrib_sign: { model: 1, dset_a: 1 }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  units: mm w. e. yr^-1
+  cmap: YlGnBu
+  cmin: 0
+  mask_weight: true
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600, }
+
+# Re-freeze
+- title: Re-freeze
+  dset_a: rfrzgl
+  model: QSNOFRZ
+  ac_contrib_sign: { model: 1, dset_a: 1 }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  mask_weight: true
+  units: mm w. e. yr^-1
+  cmin: 0
+  cmap: YlGnBu
+
+# Runoff
+- title: Runoff
+  dset_a: totrunoff
+  model: QRUNOFF
+  ac_contrib_sign: { model: -1, dset_a: -1 }
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600, }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  mask_weight: true
+  units: mm w. e. yr^-1
+  # cmin: -20.0
+  cmin: 0
+  # cmax: 20.0
+  cmap: YlGnBu
+
+# Snow & ice melt
+- title: Snow + ice melt
+  dset_a: mltgl
+  model: ["+", QSNOMELT, QICE_MELT]
+  ac_contrib_sign: { model: -1, dset_a: -1 }
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600, }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  mask_weight: true
+  units: mm w. e. yr^-1
+  # cmin: -20.0
+  # cmax: 20.0
+  cmin: 0
+  # cmax: 20.0
+  cmap: YlGnBu
+
+# Sublimation
+- title: Sublimation
+  dset_a: sublgl
+  model: QSOIL
+  comment: " (Positive to atmosphere)"
+  ac_contrib_sign: { model: -1, dset_a: 1 }
+  scales: { model: 365 * 24 * 3600, dset_a: -365 * 24 * 3600, }
+  aavg: { scale: 1e-06, units: GT yr^-1, sum: true }
+  mask_weight: true
+  units: mm w. e. yr^-1

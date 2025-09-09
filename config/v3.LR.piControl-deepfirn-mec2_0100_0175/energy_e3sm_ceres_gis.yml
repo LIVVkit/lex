@@ -1,0 +1,84 @@
+Energy_Balance_CERES_GIS:
+  module: lex/energy/energy.py
+  references:
+    [
+     /global/cfs/cdirs/e3sm/livvkit/data/racmo/Noel2015.bib,
+     /global/cfs/cdirs/e3sm/livvkit/data/cism/glissade/cism-glissade.bib,
+     /global/cfs/cdirs/e3sm/livvkit/data/e3sm/Evans2019.bib,
+     /global/cfs/cdirs/e3sm/livvkit/data/livvkit.bib,
+    ]
+  meta:
+    Case ID: [v3.LR.piControl-deepfirn-mec2_0100_0175]
+    Climatology years: [1980-2020]
+    Model: [E3SM-ELM]
+  img_height: 300
+  climo: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.{clim}_mean.nc
+  climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/remap/v3.LR.piControl-deepfirn-mec2_0100_0175.{clim}_mean_cmip6.nc
+  lnd_climo: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.ANN_mean.nc
+  glc_surf: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.ANN_mean.nc
+
+  latlon: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.ANN_mean.nc
+  elevation: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.ANN_mean.nc
+  latv: lat
+  lonv: lon
+  topov: topo
+  landfracv: landfrac
+  maskv: gis_mask2
+  dataset_names:
+    { model_native: ELM, model_remap: "ELM [CERES Grid]", dset_a: CERES }
+  aavg_sort: [ELM, "ELM [CERES Grid]", CERES]
+  mask_ocean: { model_native: false, model_remap: true, dset_a: true }
+  scales: { model: 1, dset_a: 1 }
+  clim_years:
+    dset_a: { year_s: 2001, year_e: 2018 }
+  data_vars:
+    - title: Albedo
+      dset_a: [/, rsus, rsds]
+      model:
+        - /
+        - [+, FSRND, FSRVD]
+        - [+, FSDSVD, FSDSND]
+      sign: 1
+      scales: { dset_a: 1, model: 1 }
+      units: unitless
+      cmin: 0.5
+      cmax: 0.83
+      cmin_d: -0.2
+      cmax_d: 0.2
+    - dset_a: sfc_net_sw_all_mon
+      model: FSA
+      title: Shortwave net
+      comment: " (Positive to surface)"
+      sign: 1
+      scales: { dset_a: 1, model: 1 }
+      units: W m^-2
+    - dset_a: rsds
+      model: FSDS
+      title: Shortwave down
+      sign: 1
+      scales: { dset_a: 1, model: 1 }
+      units: W m^-2
+    - dset_a: sfc_net_lw_all_mon
+      model: FIRA
+      title: Longwave net
+      comment: " (Positive to atmosphere)"
+      sign: 1
+      scales: { dset_a: -1, model: 1 }
+      units: W m^-2
+    - dset_a: rlds
+      model: FLDS
+      title: Longwave down
+      sign: 1
+      scales: { dset_a: 1, model: 1 }
+      units: W m^-2
+  in_dirs:
+    dset_a: /global/cfs/cdirs/e3sm/e3sm_diags/obs_for_e3sm_diags/climatology/ceres_ebaf_surface_v4.1
+  file_patterns:
+    dset_a: ceres_ebaf_surface_v4.1_{season}_{sea_s}_{sea_e}_climo.nc
+  masks:
+    dset_a: /global/cfs/cdirs/e3sm/livvkit/grids/msk_gis_r025_remap_cmip6.traave.20250124.nc
+    model_native: /global/cfs/cdirs/e3sm/zender/grids/msk_gis_rcm_r05.nc
+    model_remap: /global/cfs/cdirs/e3sm/livvkit/grids/msk_gis_r025_remap_cmip6.traave.20250124.nc
+  desc: Surface energy balance component {component}{comment} from {data_var_names}
+  cmap: plasma
+  cmap_diff: RdBu_r

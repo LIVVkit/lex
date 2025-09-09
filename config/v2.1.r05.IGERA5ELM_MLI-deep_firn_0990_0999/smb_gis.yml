@@ -1,0 +1,74 @@
+Surface_Mass_Balance_GIS:
+  module: lex/smb/smb_icecores.py
+  References: [/global/cfs/cdirs/e3sm/livvkit/data/smb/smb_icecores.bib,/global/cfs/cdirs/e3sm/livvkit/data/livvkit.bib]
+  meta:
+    Case ID: [v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999]
+    Climatology years: [1980-2020]
+    Model: [E3SM-ELM]
+  climo: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999.{clim}_mean.nc
+  climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999/remap/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999.{clim}_mean_rcmgis.nc
+  aavg: /global/cfs/cdirs/e3sm/livvkit/data/e3sm/lnd/20240524.IGELM_MLI.ne30pg2_r05_IcoswISC30E3r5_gis10to10r02.pm-cpu.gnu.1k_spin_1990_2022_{clim}_1990{m_s:02d}_2021{m_e:02d}_climo_gis_mask2_aavg.nc
+  latlon: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999.ANN_mean.nc
+  elevation: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999.ANN_mean.nc
+  topo: /pscratch/sd/m/mek/lex/data/e3sm/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999/v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999.ANN_mean.nc
+  latv: lat
+  lonv: lon
+  smbv: QICE
+  topov: topo
+  landfracv: landfrac
+  maskv: gis_mask2
+  smbscale: 31536000
+  core_year_s: 1980
+  core_year_e: 2021
+  ib_year_e: 1987-1976
+  ib_year_s: 2014-2004
+  preprocess: []
+  preproc_dir: /global/cfs/cdirs/e3sm/livvkit/data/smb/processed
+  zwally_file: model_zwally_basins_elm_r05.csv
+  ib_file: IceBridge_modelXY_elm{}_r05.csv
+  smb_cf_file: SMB_CoreFirnEstimates_elm{}_r05.csv
+  smb_mo_file: SMB_Obs_Model_elm{}_r05.csv
+  racmo_dir: /pscratch/sd/m/mek/lex/data/racmo_2p4p1/remapped/climo
+  racmo_dir_native: /pscratch/sd/m/mek/lex/data/racmo_2p4p1/climo
+  racmo_ver: "2.4"
+  dataset_names: { model: ELM, dset_a: RACMO 2.4 }
+  clim_years:
+    dset_a: { year_s: 1980, year_e: 2020 }
+  scales:
+    { model: 365 * 24 * 3600, dset_a: 365 * 24 * 3600, dset_b: 365 * 24 * 3600 }
+  icesheet: gis
+  data_vars: !include config/smb_vars.yml
+  units: mm w. e. yr^-1
+  primary_var: smbgl
+  vars:
+    {
+      rain: RAIN,
+      snow: SNOW,
+      melt: QICE_MELT,
+      runoff: QRUNOFF,
+      freeze: QICE_FRZ,
+    }
+  in_dirs: { dset_a: "/global/cfs/cdirs/fanssie/racmo/2.4.1/clm/{_var}" }
+  file_patterns:
+    { dset_a: "{_var}_{icesheet}_{season}_{sea_s}_{sea_e}_climo.nc" }
+  timeseries_dirs:
+    {
+      model: "/global/cfs/projectdirs/e3sm/zender/livvkit",
+      dset_a: "/global/cfs/cdirs/fanssie/racmo/2.4.1/ts",
+    }
+  ts_file_patterns:
+    {
+      model: "v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999.nc",
+      dset_a: "{_var}_{icesheet}_{year_s}01_{year_e}12.nc",
+    }
+
+  masks:
+    {
+      dset_a: /global/cfs/cdirs/e3sm/zender/grids/msk_gis_r025_rcm.nc,
+      model: /global/cfs/cdirs/e3sm/zender/grids/msk_gis_r025_rcm.nc,
+      model_native: /pscratch/sd/m/mek/lex/data/grids/msk_gis_rcm_r05.nc,
+    }
+  desc: "{component} component of SMB from {data_var_names}"
+  cmap: BrBG
+  cmap_diff: BrBG
+  clim_even: 1
