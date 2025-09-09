@@ -8,8 +8,7 @@ This repository holds a collection of extensions to `LIVVkit <https://livvkit.gi
 for validation and custom analyses of ice sheet models and their associated Earth
 system models.
 
-LEX was first described in [Evans2018]_; to reproduce the analyses there, see the
-`Reproducing Evans et al. (2018)`_ section.
+LEX was first described in [Evans2018]_
 
 .. [Evans2018] Evans, K.J., J.H. Kennedy, D. Lu, M.M. Forrester, S. Price, J. Fyke,
    A.R. Bennett, M.J. Hoffman, I. Tezaur, C.S. Zender, and M. Vizcaino (In Review).
