@@ -7,7 +7,7 @@ This repository holds a collection of extensions to
 custom analyses of ice sheet models and their associated Earth system
 models.
 
-LEX was first described in [\[Evans2018\]](#Evans2018){.citation}
+LEX was first described in Evans, et al., 2019[^1]
 
 ## Dependencies
 
@@ -73,7 +73,7 @@ from the top level `lex` directory. You *can* run any of these
 extensions from any directory, but you will need to edit the paths in
 the YAML configuration files so that `livv` can find the required files.
 
-Likewise, you can also apply these analyses to any new model run[^1] by
+Likewise, you can also apply these analyses to any new model run[^2] by
 adjusting the paths to point to your model run.
 
 ## Running cases on PM-CPU
@@ -135,16 +135,14 @@ Want to send us a private message?
 
 **Katherine J. Evans** :github: \@kevans32
 
-::: {#citations}
 
-[Evans2018]{#Evans2018 .citation-label}
 
-:   Evans, K.J., J.H. Kennedy, D. Lu, M.M. Forrester, S. Price, J. Fyke,
+[^1]:   Evans, K.J., J.H. Kennedy, D. Lu, M.M. Forrester, S. Price, J. Fyke,
     A.R. Bennett, M.J. Hoffman, I. Tezaur, C.S. Zender, and M. Vizcaino
     (2019). LIVVkit 2.1: Automated and extensible ice sheet model
     validation. *Geoscientific Model Development.* https://gmd.copernicus.org/articles/12/1067/2019/
 
-[^1]: This assumes the new data files conform to the format of the
+[^2]: This assumes the new data files conform to the format of the
     included data files. That is, an extension that analyses output from
     the CISM-Albany ice sheet model will likely be able to analyze any
     similar CISM-Albany simulation, but likely would *not* be able to
