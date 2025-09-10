@@ -1,6 +1,6 @@
 Energy_Balance_CERES_GIS:
   module: lex/energy/energy.py
-  references: [data/racmo/Noel2015.bib,/global/cfs/cdirs/e3sm/livvkit/data/cism/glissade/cism-glissade.bib,/global/cfs/cdirs/e3sm/livvkit/data/e3sm/Evans2019.bib,
+  references: [/global/cfs/cdirs/e3sm/livvkit/data/racmo/Noel2015.bib,/global/cfs/cdirs/e3sm/livvkit/data/cism/glissade/cism-glissade.bib,/global/cfs/cdirs/e3sm/livvkit/data/e3sm/Evans2019.bib,
    /global/cfs/cdirs/e3sm/livvkit/data/livvkit.bib]
   meta:
     Case ID: [v2.1.r05.IGERA5ELM_MLI-deep_firn_0990_0999]

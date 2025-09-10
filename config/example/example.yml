@@ -1,4 +1,5 @@
-template: 
+---
+template:
     module: lex/example/example.py
     description: A minimal LIVVkit extensions example.
     directions: Put any declarations you need here
