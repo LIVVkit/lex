@@ -30,6 +30,9 @@ mv ${WEBDIR}/${CASE} ${WEBDIR}/${CASE}_bkd_$(date +'%Y%m%dT%H%M')
 # Move the new analysis from scratch to the published directory (prevents pre-maturely overwriting)
 mv $SCRATCH/lex/${CASE} ${WEBDIR}
 
+# Make the output directory rwxr-xr-x
+chmod -R 0755 ${WEBDIR}/${CASE}
+
 # Enter the Case output directory
 pushd ${WEBDIR}/${CASE}
 
