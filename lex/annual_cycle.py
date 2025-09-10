@@ -1,5 +1,6 @@
 import datetime as dt
 import os
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -134,14 +135,19 @@ def main(args, config):
     obs_data_out.index = obs_data_out["month"]
 
     obs_data_out.to_csv(
-        f"annual_cycle_{lxc.img_file_prefix(config)}"
-        f"{config["dataset_names"]["dset_a"].replace(" ", "_").replace(".", "_")}.csv"
+        Path(
+            args.out,
+            f"annual_cycle_{lxc.img_file_prefix(config)}"
+            f"{config["dataset_names"]["dset_a"].replace(" ", "_").replace(".", "_")}.csv"
+        )
     )
     model_data_out = pd.DataFrame(model_data_out)
     model_data_out.index = model_data_out["month"]
     model_data_out.to_csv(
-        f"annual_cycle_{lxc.img_file_prefix(config)}_"
-        f"{config["dataset_names"]["model"]}.csv"
+        Path(args.out, 
+            f"annual_cycle_{lxc.img_file_prefix(config)}_"
+            f"{config["dataset_names"]["model"]}.csv"
+        )
     )
 
     if _aavg_units == "":

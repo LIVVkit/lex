@@ -38,7 +38,7 @@ def assemble_outdata(args, config, dataset, aavg_data, ts_data, aavg_units):
             else:
                 _aavg = aavg_data.get(data_var["title"])
         else:
-            print(f"DATA NOT FOUND FOR {data_var["title"]} in {dataset}")
+            print(f"DATA NOT FOUND FOR {data_var['title']} in {dataset}")
             continue
 
         aavg_out[data_var["title"].replace(" ", "_")] = xr.DataArray(
@@ -235,7 +235,7 @@ def main(args, config):
         desc_comment = f"{data_var.get('comment', '')}"
 
         _img_elem = el.Image(
-            f"{data_var["title"]} timeseries",
+            f"{data_var['title']} timeseries",
             config["desc"].format(
                 component=data_var["title"],
                 data_var_names=data_var_names,
