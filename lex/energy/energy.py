@@ -37,7 +37,9 @@ from pathlib import Path
 import argparse
 import livvkit
 from livvkit import elements as el
-from lex.common import SEASON_NAME
+# Don't remove summarize_result...this is used by livvkit.components.validation
+# to have the summaries appear on the main LIVVkit output page
+from lex.common import summarize_result, SEASON_NAME
 from lex import compare_gridded, utils, time_series_plot
 
 

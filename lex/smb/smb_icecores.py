@@ -34,7 +34,9 @@ import pandas as pd
 from livvkit import elements as el
 from livvkit.util import functions as fn
 
-from lex.common import SEASON_NAME
+# Don't remove summarize_result...this is used by livvkit.components.validation
+# to have the summaries appear on the main LIVVkit output page
+from lex.common import summarize_result, SEASON_NAME
 from lex import compare_gridded, annual_cycle, time_series_plot
 
 with fn.TempSysPath(os.path.dirname(__file__)):

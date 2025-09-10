@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2016, UT-BATTELLE, LLC
+# Copyright (c) 2015-2025, UT-BATTELLE, LLC
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,9 @@ This template provides an example of a minimal LIVVkit extension.
 """
 
 from livvkit import elements as el
-
+# Don't remove summarize_result...this is used by livvkit.components.validation
+# to have the summaries appear on the main LIVVkit output page
+from lex.common import summarize_result as sum_common
 
 def run(name, config):
     """
@@ -74,8 +76,7 @@ def summarize_result(result):
     Provides a snapshot of the extension's results to be provided on the
     summary webpage and printed to STDOUT via the print_summary method
     """
-    raise NotImplementedError
-
+    return sum_common(result)
 
 def populate_metadata():
     """
