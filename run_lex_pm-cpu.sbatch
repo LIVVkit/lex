@@ -22,6 +22,7 @@ CASES=(
     "v3.LR.piControl.I.hex_eqm_0001_0100"
     "v3.LR.piControl.I.hex_eqm_0101_0200"
     "v3.LR.piControl.I.hex_eqm_0201_0300"
+    "v3.LR.piControl-deepfirn-mec2_0100_0175"
 )
 
 njobs=${#CASES[@]}
