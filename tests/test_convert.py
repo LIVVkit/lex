@@ -5,15 +5,15 @@ import os
 
 
 def test_convert_to_yaml():
-    in_file = "json_to_convert.json"
-    out_file = "yml_to_convert.yml"
-    ref_file = "yml_reference.yml"
+    in_file = Path("tests", "json_to_convert.json")
+    out_file = Path("tests", "yml_to_convert.yml")
+    ref_file = Path("tests", "yml_reference.yml")
 
-    assert not Path(out_file).exists()
-    lconvert.json_to_yaml(Path(in_file))
-    assert Path(out_file).exists()
-    ref_yml = fcn.read_yaml(Path(ref_file))
-    test_yml = fcn.read_yaml(Path(out_file))
+    assert not out_file.exists()
+    lconvert.json_to_yaml(in_file)
+    assert out_file.exists()
+    ref_yml = fcn.read_yaml(ref_file)
+    test_yml = fcn.read_yaml(out_file)
     assert ref_yml == test_yml
     os.remove(out_file)
-    assert not Path(out_file).exists()
+    assert not out_file.exists()

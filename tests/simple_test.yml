@@ -1,0 +1,4 @@
+---
+ExtensionTest:
+    module: tests/extension_simple.py
+    description: A minimal LIVVkit extensions test.
