@@ -134,3 +134,6 @@ tags
 
 # Visio autosave temporary files
 *.~vsd*
+# pixi environments
+.pixi/*
+!.pixi/config.toml

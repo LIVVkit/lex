@@ -11,7 +11,7 @@ LEX was first described in Evans, et al., 2019[^1]
 
 ## Dependencies
 
-The Python dependencies are listed in `pyproject.toml`, but
+The Python dependencies are listed in requirements*.txt but
 this suite depends on a set of reanalysis and observational datasets,
 which are part of E3SM-Diags, available on several DOE supported
 machines, including Perlmutter at NERSC, and Chrysalis at ANL\'s LCRC.
@@ -22,7 +22,18 @@ planned to support other machines.
 ## Environment setup
 
 For setting up an environment to which lex and dependencies will be
-installed, conda and Python virtualenv are documented here.
+installed, conda and Python virtualenv are documented here. **NB** this
+will only currently work on NERSC's Perlmutter, the environment should be 
+created there.
+
+### Conda environment 
+```bash
+git clone https://github.com/LIVVkit/lex.git
+cd lex
+{conda, mamba} create -n lex_env python --file requirements.txt
+{conda, mamba} activate lex_env
+pip install -e .    # Installs the lex module as an editable Python package to the lex_env environment.
+```
 
 ### Python virtualenv
 ```bash
@@ -36,15 +47,6 @@ installed, conda and Python virtualenv are documented here.
 This will create a virtual environment at `lex/.env`, and install the
 LEX package as editable with all its Python requirements to run.
 
-### Conda environment 
-```bash
-git clone https://github.com/LIVVkit/lex.git
-cd lex
-{conda, mamba} create -n lex_env python --file requirements.txt
-{conda, mamba} activate lex_env
-lex_env pip install -e .
-```
-
 ### Other available environment management solutions
 Not documented here, but also available for environment management
 - [uv](https://docs.astral.sh/uv/)
@@ -52,7 +54,7 @@ Not documented here, but also available for environment management
 
 ## Basic usage
 
-Within the [lex/config]{.title-ref} directory there are templates for
+Within the `lex/config` directory there are templates for
 ELM r05 and r025 resolutions, as well as pre-existing configurations for
 several current runs.
 
@@ -61,7 +63,7 @@ interface) to any of these extensions via the the `-V/--validate`
 option.
 
 For example, to run the minimal example extension, place the output
-website in the [vv_test]{.title-ref} directory, and serve the output
+website in the `vv_test` directory, and serve the output
 website you\'d run this command:
 
 ```bash
