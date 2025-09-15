@@ -14,17 +14,17 @@ Surface_Mass_Balance_GIS:
     Model: [E3SM-ELM]
 
   # Location of native grid climatology files (clim is ANN, DJF, MAM, ... or, 01, 02, ...)
-  climo: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.{clim}_mean.nc
+  climo: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.{clim}_mean.nc
 
   # Location of re-mapped to RACMO climatology file
-  climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/remap/CASE_ID.{clim}_mean_rcmgis.nc
+  climo_remap: SCRATCH_DIR/lex/data/e3sm/CASE_ID/remap/CASE_ID.{clim}_mean_rcmgis.nc
   
   # Some of the legacy SMB scripts have the ability to have lat/lon, eleveation, and topography
   # split into multiple files. Effectively these are all the same within the new livvkit post-processing
   # workflow, but have not been changed for the legacy code yet
-  latlon: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
-  elevation: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
-  topo: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  latlon: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  elevation: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  topo: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
 
   # Allow different variable names for latitude / longitude
   latv: lat
@@ -59,8 +59,8 @@ Surface_Mass_Balance_GIS:
   smb_mo_file: SMB_Obs_Model_elm{}_r025.csv
 
   # Nearly sure these aren't used at all
-  # racmo_dir: /pscratch/sd/m/mek/lex/data/racmo_2p4p1/remapped/climo
-  # racmo_dir_native: /pscratch/sd/m/mek/lex/data/racmo_2p4p1/climo
+  # racmo_dir: SCRATCH_DIR/lex/data/racmo_2p4p1/remapped/climo
+  # racmo_dir_native: SCRATCH_DIR/lex/data/racmo_2p4p1/climo
   # racmo_ver: "2.4"
 
   # Human readable names for the datasets, for comparison to second 
@@ -119,7 +119,7 @@ Surface_Mass_Balance_GIS:
     {
       dset_a: /global/cfs/cdirs/e3sm/zender/grids/msk_gis_r025_rcm.nc,
       model: /global/cfs/cdirs/e3sm/zender/grids/msk_gis_r025_rcm.nc,
-      model_native: /pscratch/sd/m/mek/lex/data/grids/msk_gis_rcm_r025.nc,
+      model_native: SCRATCH_DIR/lex/data/grids/msk_gis_rcm_r025.nc,
     }
 
   # Appears in the image caption on output website

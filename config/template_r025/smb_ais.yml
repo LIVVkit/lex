@@ -14,16 +14,16 @@ Surface_Mass_Balance_AIS:
     Model: [E3SM-ELM]
 
   # Location of native grid climatology files (clim is ANN, DJF, MAM, ... or, 01, 02, ...)
-  climo: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.{clim}_mean.nc
+  climo: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.{clim}_mean.nc
   # Location of re-mapped to RACMO climatology file
-  climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/remap/CASE_ID.{clim}_mean_rcmais.nc
+  climo_remap: SCRATCH_DIR/lex/data/e3sm/CASE_ID/remap/CASE_ID.{clim}_mean_rcmais.nc
 
   # Some of the legacy SMB scripts have the ability to have lat/lon, eleveation, and topography
   # split into multiple files. Effectively these are all the same within the new livvkit post-processing
   # workflow, but have not been changed for the legacy code yet 
-  latlon: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
-  elevation: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
-  topo: /pscratch/sd/m/mek/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  latlon: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  elevation: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  topo: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
   # Allow different variable names for latitude / longitude
   latv: lat
   lonv: lon
@@ -95,7 +95,7 @@ Surface_Mass_Balance_AIS:
     {
       dset_a: /global/cfs/cdirs/e3sm/zender/grids/msk_ais_r025_rcm.nc,
       model: /global/cfs/cdirs/e3sm/zender/grids/msk_ais_r025_rcm.nc,
-      model_native: /pscratch/sd/m/mek/lex/data/grids/msk_ais_rcm_r025.nc,
+      model_native: SCRATCH_DIR/lex/data/grids/msk_ais_rcm_r025.nc,
     }
 
   # Appears in the image caption on output website
