@@ -23,26 +23,26 @@ planned to support other machines.
 
 For setting up an environment to which lex and dependencies will be
 installed, conda and Python virtualenv are documented here. **NB** this
-will only currently work on NERSC's Perlmutter, the environment should be 
+will only currently work on NERSC's Perlmutter, the environment should be
 created there.
 
-### Conda environment 
+### Conda environment
 ```bash
-git clone https://github.com/LIVVkit/lex.git
-cd lex
-{conda, mamba} create -n lex_env python --file requirements.txt
-{conda, mamba} activate lex_env
-pip install -e .    # Installs the lex module as an editable Python package to the lex_env environment.
+$ git clone https://github.com/LIVVkit/lex.git
+$ cd lex
+$ {conda, mamba} create -n lex_env python --file requirements.txt
+$ {conda, mamba} activate lex_env
+$ pip install -e .    # Installs the lex module as an editable Python package to the lex_env environment.
 ```
 
 ### Python virtualenv
 ```bash
- git clone https://github.com/LIVVkit/lex.git
- cd lex python -m venv .env
- source .env/bin/activate
- pip install --upgrade pip # Needed if the system pip version < 21.3
- pip install -e .
- ```
+$ git clone https://github.com/LIVVkit/lex.git
+$ cd lex python -m venv .env
+$ source .env/bin/activate
+$ pip install --upgrade pip # Needed if the system pip version < 21.3
+$ pip install -e .
+```
 
 This will create a virtual environment at `lex/.env`, and install the
 LEX package as editable with all its Python requirements to run.
@@ -67,9 +67,9 @@ website in the `vv_test` directory, and serve the output
 website you\'d run this command:
 
 ```bash
-livv -V config/example/example.yml -o vv_test -s
+$ livv -V config/example/example.yml -o $SCRATCH/vv_test -s
 ```
-
+This will create a directory in `$SCRATCH` called `vv_test`
 *Note:* All the extension configurations files assume you are working
 from the top level `lex` directory. You *can* run any of these
 extensions from any directory, but you will need to edit the paths in
@@ -83,22 +83,22 @@ adjusting the paths to point to your model run.
 The `lex/run_livv.sh` script will run all the currently
 available analyses on pm-cpu for a particular case, e.g.:
 ```bash
-cd lex
-./run_livv.sh v2.1.r025.IGERA5ELM_MLI-deep_firn_1980_2020
+$ cd $HOME/lex
+$ ./run_livv.sh v2.1.r025.IGERA5ELM_MLI-deep_firn_1980_2020
 ```
-Will create a web output at `/global/cfs/projectdirs/e3sm/www/${USER}/v2.1.r025.IGERA5ELM_MLI-deep_firn_1980_2020`, 
+Will create a web output at `/global/cfs/projectdirs/e3sm/www/${USER}/v2.1.r025.IGERA5ELM_MLI-deep_firn_1980_2020`,
 viewable at https://portal.nersc.gov/project/e3sm/${USER}/v2.1.r025.IGERA5ELM_MLI-deep_firn_1980_2020
 
 The batch script provided will run all current cases on Perlmutter on a
-compute node in parallel 
+compute node in parallel
 ```bash
-cd lex
-sbatch run_lex_pm-cpu.sbatch
+$ cd lex
+$ sbatch run_lex_pm-cpu.sbatch
 ```
 
 ## Performing post-processing on a single time series ELM h0 output
 - Edit the `lex/lex/postproc/e3sm/postproc.sbatch` batch file to mach the new run
-  
+
     Key variables:
     - `INDIR`: Path which contains single output time series file
     - `OUTCASE`: Name of the new case which is the name of the netCDF file without extension (e.g. `v2.1.r025.IGERA5ELM_MLI-deep_firn_1980_2020`)
@@ -136,8 +136,6 @@ Want to send us a private message?
 **Joseph H. Kennedy** :github: \@jhkennedy
 
 **Katherine J. Evans** :github: \@kevans32
-
-
 
 [^1]:   Evans, K.J., J.H. Kennedy, D. Lu, M.M. Forrester, S. Price, J. Fyke,
     A.R. Bennett, M.J. Hoffman, I. Tezaur, C.S. Zender, and M. Vizcaino
