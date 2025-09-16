@@ -7,13 +7,13 @@ Energy_Balance_ERA5_AIS:
     Climatology years: [1980-2020]
     Model: [E3SM-ELM]
   img_height: 300
-  climo: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.{clim}_mean.nc
-  climo_remap: SCRATCH_DIR/lex/data/e3sm/CASE_ID/remap/CASE_ID.{clim}_mean_era5.nc
-  lnd_climo: SCRATCH_DIR/lex/data/e3sm/CASE_ID/remap/CASE_ID.ANN_mean_era5.nc
-  glc_surf: SCRATCH_DIR/lex/data/e3sm/CASE_ID/remap/CASE_ID.ANN_mean_era5.nc
+  climo: CASE_OUT_DIR/CASE_ID.{clim}_mean.nc
+  climo_remap: CASE_OUT_DIR/remap/CASE_ID.{clim}_mean_era5.nc
+  lnd_climo: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_era5.nc
+  glc_surf: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_era5.nc
   
-  latlon: SCRATCH_DIR/lex/data/e3sm/CASE_ID/remap/CASE_ID.ANN_mean_era5.nc
-  elevation: SCRATCH_DIR/lex/data/e3sm/CASE_ID/remap/CASE_ID.ANN_mean_era5.nc
+  latlon: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_era5.nc
+  elevation: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_era5.nc
   latv: lat
   lonv: lon
   topov: topo

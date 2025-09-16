@@ -11,10 +11,13 @@ LEX was first described in Evans, et al., 2019[^1]
 
 ## Dependencies
 
-The Python dependencies are listed in requirements*.txt but
+The Python dependencies are listed in requirements.txt and requirements-dev.txt but
 this suite depends on a set of reanalysis and observational datasets,
 which are part of E3SM-Diags, available on several DOE supported
 machines, including Perlmutter at NERSC, and Chrysalis at ANL\'s LCRC.
+
+The Python package itself is described in `pyproject.toml`, which is used by
+`pip` to install this package
 
 Currently, LEX is designed to run on Perlmutter, but future work is
 planned to support other machines.
@@ -64,12 +67,13 @@ option.
 
 For example, to run the minimal example extension, place the output
 website in the `vv_test` directory, and serve the output
-website you\'d run this command:
+website you'd run this command:
 
 ```bash
-$ livv -V config/example/example.yml -o $SCRATCH/vv_test -s
+$ livv -V config/example/example.yml -o vv_test -s
 ```
-This will create a directory in `$SCRATCH` called `vv_test`
+This will create a directory in the current directory called `vv_test` (~7.5 MB), and spawn an HTTP server, which should only be used for testing purposes. (This works best if the output is in the current directory)
+
 *Note:* All the extension configurations files assume you are working
 from the top level `lex` directory. You *can* run any of these
 extensions from any directory, but you will need to edit the paths in

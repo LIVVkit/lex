@@ -14,17 +14,17 @@ Surface_Mass_Balance_GIS:
     Model: [E3SM-ELM]
 
   # Location of native grid climatology files (clim is ANN, DJF, MAM, ... or, 01, 02, ...)
-  climo: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.{clim}_mean.nc
+  climo: CASE_OUT_DIR/CASE_ID.{clim}_mean.nc
 
   # Location of re-mapped to RACMO climatology file
-  climo_remap: SCRATCH_DIR/lex/data/e3sm/CASE_ID/remap/CASE_ID.{clim}_mean_rcmgis.nc
+  climo_remap: CASE_OUT_DIR/remap/CASE_ID.{clim}_mean_rcmgis.nc
   
   # Some of the legacy SMB scripts have the ability to have lat/lon, eleveation, and topography
   # split into multiple files. Effectively these are all the same within the new livvkit post-processing
   # workflow, but have not been changed for the legacy code yet
-  latlon: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
-  elevation: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
-  topo: SCRATCH_DIR/lex/data/e3sm/CASE_ID/CASE_ID.ANN_mean.nc
+  latlon: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
+  elevation: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
+  topo: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
 
   # Allow different variable names for latitude / longitude
   latv: lat

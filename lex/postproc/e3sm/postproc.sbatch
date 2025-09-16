@@ -168,7 +168,13 @@ if [ ! -d config/${OUTCASE} ]; then
     echo "CREATING CONFIG DIRECTORY FOR ${OUTCASE}"
     cp -R config/template_${RES} config/${OUTCASE}
     pushd config/${OUTCASE}
+    # Replace the CASE_ID variable with the actual casename
     sed -i "s/CASE_ID/${OUTCASE}/g" *.yml
+
+    # Then replace the path with the scratch directory
+    # The pipes are used in place of / below since the
+    # variable ${SCRATCH} will contain some "/"
+    sed -i "s|CASE_OUT_DIR|${OUTDIR}|g" *.yml
     popd
 fi
 ./run_livv.sh ${OUTCASE}
