@@ -1,5 +1,6 @@
-import lex.utils as lxu
 import numpy as np
+
+import lex.utils as lxu
 
 ### DEFINE FORMULAS
 seb_merra = [
@@ -103,8 +104,6 @@ def test_name():
 
 
 def test_vars():
-    dset1 = {}
-
     assert sorted(lxu.extract_vars(sum_of_two)) == sorted(["T", "TS"])
     assert sorted(lxu.extract_vars(sum_of_three)) == sorted(["U", "V", "T"])
     assert sorted(lxu.extract_vars(net_seb)) == sorted(

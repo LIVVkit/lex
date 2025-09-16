@@ -4,10 +4,8 @@
 
 import os
 
-# from collections import namedtuple
-
-import matplotlib.pyplot as plt
 import matplotlib.path as mpath
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -18,6 +16,9 @@ from numpy import ma
 
 from lex import common as lxc
 from lex import utils as lxu
+
+# from collections import namedtuple
+
 
 IMG_GROUP = "components"
 DESCRIBE_COMPONENTS = """
@@ -320,7 +321,7 @@ def main(args, config, sea="ANN"):
             try:
                 diffs[_diffname] = ma.masked_array(diffs[_diffname], mask=_mask.mask)
             except np.ma.core.MaskError:
-                breakpoint()
+                raise
             if data_var.get("mask_weight", False):
                 diffs[_diffname] *= _mask
 
@@ -420,8 +421,7 @@ def main(args, config, sea="ANN"):
                 axes[n_dsets_to_plot + idx],
                 color_field=_cf,
                 label=(
-                    f"{config['dataset_names'][_ds1]} - "
-                    f"{config['dataset_names'][_ds2]}"
+                    f"{config['dataset_names'][_ds1]} - {config['dataset_names'][_ds2]}"
                 ),
                 cnrtxt=cnrtxt,
                 icesheet=icesheet,

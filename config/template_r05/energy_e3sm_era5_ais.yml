@@ -11,7 +11,7 @@ Energy_Balance_ERA5_AIS:
   climo_remap: CASE_OUT_DIR/remap/CASE_ID.{clim}_mean_era5.nc
   lnd_climo: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_era5.nc
   glc_surf: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_era5.nc
-  
+
   latlon: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_era5.nc
   elevation: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_era5.nc
   latv: lat

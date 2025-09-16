@@ -1,6 +1,7 @@
-from livvkit import __main__
-import pytest
 from pathlib import Path
+
+import pytest
+from livvkit import __main__
 
 
 @pytest.fixture(scope="session")

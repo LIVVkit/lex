@@ -7,10 +7,10 @@ Make a whole-run timeseries plot comparing model to obs.
 import os
 
 import matplotlib.pyplot as plt
+import nc_time_axis  # noqa: F401
 import numpy as np
 import xarray as xr
 from livvkit import elements as el
-import nc_time_axis  # noqa: F401
 
 import lex.common as lxc
 import lex.utils as lxu
@@ -150,7 +150,7 @@ def main(args, config):
                 * lxu.eval_expr(_scale["model"])
             )
         except TypeError:
-            breakpoint()
+            raise
 
         model_m, model_b, model_t = compute_trend(ts_data["model"].time, _model_plt)
         obs_m, obs_b, obs_t = compute_trend(ts_data["dset_a"].time, _obs_plt)

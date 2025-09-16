@@ -3,20 +3,20 @@
 """
 Module containing routines to create map plots of Surface Mass Balance data.
 """
+
 import os
-from typing import OrderedDict
+from pathlib import Path
+
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.ma as ma
-import matplotlib.pyplot as plt
 import pandas as pd
+import smb.preproc as preproc
+from livvkit import elements as el
+from matplotlib import colors as c
 from mpl_toolkits.basemap import Basemap
 from netCDF4 import Dataset
 from scipy.interpolate import griddata
-from matplotlib import colors as c
-from livvkit import elements as el
-import xarray as xr
-from pathlib import Path
-import smb.preproc as preproc
 
 DESCRIBE_CORE = """
 Filled contour of modeled annual surface mass balance of the Greenland ice
@@ -64,7 +64,7 @@ def mali_to_contour(lon_cell, lat_cell, data_cell):
 
     # First make a regular grid to interpolate onto
     # Adjust the density of the regular grid (4 * sqrt(nCells))
-    numcols = int(n_cells ** 0.5) * 2
+    numcols = int(n_cells**0.5) * 2
     numrows = numcols
     _xc = np.linspace(lon_cell.min(), lon_cell.max(), numcols)
     _yc = np.linspace(lat_cell.min(), lat_cell.max(), numrows)

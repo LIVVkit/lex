@@ -11,7 +11,7 @@ Energy_Balance_CERES_GIS:
   climo_remap: CASE_OUT_DIR/remap/CASE_ID.{clim}_mean_cmip6.nc
   lnd_climo: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
   glc_surf: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
-  
+
   latlon: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
   elevation: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
   latv: lat

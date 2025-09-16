@@ -4,7 +4,7 @@
 #   - dset_a: definition for the field in dset_a dataset (i.e. RACMO)
 #   - model: definition for the field in model dataset (i.e. ELM)
 #   - units: Units of this field
-#   - ac_contrib_sign: For each dataset, multiply the annual cycle by +/- 1 to achieve 
+#   - ac_contrib_sign: For each dataset, multiply the annual cycle by +/- 1 to achieve
 #                      correct contribution to annual cycle of SMB
 #   - aavg: parameters for ice sheet-area-averaging
 #       - scale: Further scale the area-average, (this typically converts mm w.e./yr to GT/yr)

@@ -34,17 +34,15 @@ import pandas as pd
 from livvkit import elements as el
 from livvkit.util import functions as fn
 
-# Don't remove summarize_result...this is used by livvkit.components.validation
-# to have the summaries appear on the main LIVVkit output page
-from lex.common import summarize_result, SEASON_NAME
-from lex import compare_gridded, annual_cycle, time_series_plot
+from lex import annual_cycle, compare_gridded, time_series_plot
+from lex.common import SEASON_NAME
+from lex.common import summarize_result as sum_res
 
 with fn.TempSysPath(os.path.dirname(__file__)):
     import smb.plot_core_hists as c_hists
     import smb.plot_core_transects as c_transects
     import smb.plot_IB_hist as IB_hist
     import smb.plot_IB_scatter as IB_scatter
-
     import smb.plot_spatial as plt_spatial
     import smb.preproc as preproc
     import smb.utils as utils
@@ -193,6 +191,11 @@ def print_summary(summary):
     """
     for ele in summary:
         print(f"\tCompleted: {ele}")
+
+
+def summarize_result(result):
+    """Use the summarize_result from lex.common to summarize."""
+    return sum_res(result)
 
 
 def populate_metadata():

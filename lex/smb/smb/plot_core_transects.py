@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import smb.preproc as preproc
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import smb.preproc as preproc
 from livvkit import elements as el
 
 describe_felev = """
@@ -146,9 +146,9 @@ def main(args, config):
     glacier_list = ["414", "180", "215", "454"]
     # glac_longnames = ['Qamanârssêp Sermia', 'Nioghalfvjerdsfjorden', 'Storstrømmen', 'K-transect']
     glac_longnames = [
-        u"Qaman\u00e2rss\u00eap Sermia",
+        "Qaman\u00e2rss\u00eap Sermia",
         "Nioghalfvjerdsfjorden",
-        u"Storstr\u00f8mmen",
+        "Storstr\u00f8mmen",
         "K-transect",
     ]
 

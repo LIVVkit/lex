@@ -1,4 +1,3 @@
-import datetime as dt
 import os
 from pathlib import Path
 
@@ -37,7 +36,6 @@ def main(args, config):
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
     mons = np.arange(1, 12 + 1)
-    mon_str = [dt.datetime(2000, mon, 1).strftime("%b") for mon in mons]
     obs_data_out = {}
     model_data_out = {}
 
@@ -138,15 +136,16 @@ def main(args, config):
         Path(
             args.out,
             f"annual_cycle_{lxc.img_file_prefix(config)}"
-            f"{config["dataset_names"]["dset_a"].replace(" ", "_").replace(".", "_")}.csv"
+            f"{config['dataset_names']['dset_a'].replace(' ', '_').replace('.', '_')}.csv",
         )
     )
     model_data_out = pd.DataFrame(model_data_out)
     model_data_out.index = model_data_out["month"]
     model_data_out.to_csv(
-        Path(args.out, 
+        Path(
+            args.out,
             f"annual_cycle_{lxc.img_file_prefix(config)}_"
-            f"{config["dataset_names"]["model"]}.csv"
+            f"{config['dataset_names']['model']}.csv",
         )
     )
 

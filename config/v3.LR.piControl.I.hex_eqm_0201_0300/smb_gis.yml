@@ -7,7 +7,7 @@ Surface_Mass_Balance_GIS:
     Model: [E3SM-ELM]
   climo: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0201_0300/v3.LR.piControl.I.hex_eqm_0201_0300.{clim}_mean.nc
   climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0201_0300/remap/v3.LR.piControl.I.hex_eqm_0201_0300.{clim}_mean_rcmgis.nc
-  
+
   latlon: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0201_0300/v3.LR.piControl.I.hex_eqm_0201_0300.ANN_mean.nc
   elevation: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0201_0300/v3.LR.piControl.I.hex_eqm_0201_0300.ANN_mean.nc
   topo: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0201_0300/v3.LR.piControl.I.hex_eqm_0201_0300.ANN_mean.nc

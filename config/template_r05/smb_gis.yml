@@ -7,7 +7,7 @@ Surface_Mass_Balance_GIS:
     Model: [E3SM-ELM]
   climo: CASE_OUT_DIR/CASE_ID.{clim}_mean.nc
   climo_remap: CASE_OUT_DIR/remap/CASE_ID.{clim}_mean_rcmgis.nc
-  
+
   latlon: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
   elevation: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
   topo: CASE_OUT_DIR/CASE_ID.ANN_mean.nc

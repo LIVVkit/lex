@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import smb.preproc as preproc
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import smb.preproc as preproc
 from livvkit import elements as el
 
 describe = """

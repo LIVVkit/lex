@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 
-from livvkit import elements as el
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import smb.preproc as preproc
+from livvkit import elements as el
 
 describe_hist = """
 Histogram of differences between modeled and observed annual surface mass
@@ -99,7 +99,7 @@ def main(args, config):
     difftest = pd.DataFrame(
         data=smb_avg.mod_b - smb_avg.b, index=smb_avg.index, columns=["difference"]
     )
-    fig = plt.figure(figsize=(8, 8))
+    _ = plt.figure(figsize=(8, 8))
     hist1 = difftest["difference"].hist(bins=30, edgecolor="k")
     hist1.set_xlabel("Model - observed SMB difference\n(kg m$^{-2}$ a$^{-1}$)")
     hist1.set_ylabel("Cell frequency")

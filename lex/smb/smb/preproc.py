@@ -4,9 +4,7 @@ Pre-process surface mass balance data.
 
 import os
 from collections import namedtuple
-
 from pathlib import Path
-from re import I
 
 import matplotlib.path as path
 import numpy as np
@@ -288,7 +286,7 @@ def core(model_data, config):
     cogley = cogley[cogley.start != -999]
     cogley = cogley[cogley.end != -999]
     cogley = cogley[cogley.Z != -999]
-    cogley = cogley[cogley.source.str.contains("w") == False]
+    cogley = cogley[not cogley.source.str.contains("w")]
     cogley = cogley.drop("reserved", axis=1)
     cogley["nyears"] = cogley["end"] - cogley["start"]
 

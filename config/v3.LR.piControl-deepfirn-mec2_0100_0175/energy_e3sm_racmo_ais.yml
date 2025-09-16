@@ -11,7 +11,7 @@ Energy_Balance_RACMO_AIS:
   climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/remap/v3.LR.piControl-deepfirn-mec2_0100_0175.{clim}_mean_rcmais.nc
   lnd_climo: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.ANN_mean.nc
   glc_surf: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.ANN_mean.nc
-  
+
   latlon: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.ANN_mean.nc
   elevation: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl-deepfirn-mec2_0100_0175/v3.LR.piControl-deepfirn-mec2_0100_0175.ANN_mean.nc
   latv: lat

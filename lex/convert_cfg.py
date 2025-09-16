@@ -2,16 +2,14 @@
 # -*- coding: utf-8 -*-
 """Convert LEX config files from JSON to YML."""
 
-from pathlib import Path
+import argparse
 import json
-import sys
+from collections import OrderedDict
+from json import JSONDecoder
+from pathlib import Path
+
 import ruamel.yaml as yaml
 from ruamel.yaml.representer import RoundTripRepresenter
-
-import argparse
-
-from json import JSONDecoder
-from collections import OrderedDict
 
 
 def parse_args(args=None):

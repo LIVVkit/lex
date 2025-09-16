@@ -11,7 +11,7 @@ Energy_Balance_ERA5_AIS:
   climo_remap: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0101_0200/remap/v3.LR.piControl.I.hex_eqm_0101_0200.{clim}_mean_era5.nc
   lnd_climo: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0101_0200/remap/v3.LR.piControl.I.hex_eqm_0101_0200.ANN_mean_era5.nc
   glc_surf: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0101_0200/remap/v3.LR.piControl.I.hex_eqm_0101_0200.ANN_mean_era5.nc
-  
+
   latlon: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0101_0200/remap/v3.LR.piControl.I.hex_eqm_0101_0200.ANN_mean_era5.nc
   elevation: /pscratch/sd/m/mek/lex/data/e3sm/v3.LR.piControl.I.hex_eqm_0101_0200/remap/v3.LR.piControl.I.hex_eqm_0101_0200.ANN_mean_era5.nc
   latv: lat

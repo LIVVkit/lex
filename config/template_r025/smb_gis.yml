@@ -18,7 +18,7 @@ Surface_Mass_Balance_GIS:
 
   # Location of re-mapped to RACMO climatology file
   climo_remap: CASE_OUT_DIR/remap/CASE_ID.{clim}_mean_rcmgis.nc
-  
+
   # Some of the legacy SMB scripts have the ability to have lat/lon, eleveation, and topography
   # split into multiple files. Effectively these are all the same within the new livvkit post-processing
   # workflow, but have not been changed for the legacy code yet
@@ -36,7 +36,7 @@ Surface_Mass_Balance_GIS:
   landfracv: landfrac
   maskv: gis_mask2
   smbscale: 31536000
-  
+
   # List of pre-processing to re-run, can contain "zwally", "icebridge", "core"
   preprocess: []
 
@@ -63,7 +63,7 @@ Surface_Mass_Balance_GIS:
   # racmo_dir_native: SCRATCH_DIR/lex/data/racmo_2p4p1/climo
   # racmo_ver: "2.4"
 
-  # Human readable names for the datasets, for comparison to second 
+  # Human readable names for the datasets, for comparison to second
   # obs / reanalysis dataset add dset_b definitions
   dataset_names: { model: ELM, dset_a: RACMO 2.4 }
 
@@ -112,7 +112,7 @@ Surface_Mass_Balance_GIS:
   file_patterns:
     { dset_a: "{_var}_{icesheet}_{season}_{sea_s}_{sea_e}_climo.nc" }
 
-  # Locations for mask files, since model is remapped to `dset_a's` grid, 
+  # Locations for mask files, since model is remapped to `dset_a's` grid,
   # the model: ... file is for this grid, while model_native is for the
   # model's grid (e.g. r025, r05, etc.)
   masks:

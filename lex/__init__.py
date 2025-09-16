@@ -31,11 +31,5 @@
 Storage for global variables.  These are set upon startup in the options module
 """
 
-import getpass
-import os
-import platform
-import socket
-import time
-
 __version_info__ = (0, 2, 0)
 __version__ = ".".join(str(vi) for vi in __version_info__)

@@ -5,15 +5,15 @@ This directory holds subdirectories with scripts that will postprocess model dat
 These script environments take raw output from either a stand alone ice sheet model (e.g. cism-albany)
 or a coupled climate model (e.g. cesm1p2, e3sm1p0 (in beta testing))
 
-To enable or update the scripts to work on a given machine, alter the main scripts in the target model 
+To enable or update the scripts to work on a given machine, alter the main scripts in the target model
 subdirectory to load the necessary software.
 
-To create scripts for a model not yet included here, create a new subidirectory with README files and all 
+To create scripts for a model not yet included here, create a new subidirectory with README files and all
 the necessary files to complete the postprocessing
 
 
-#### Some notes about nco. 
-The ncra and ncwa commands are mostly used for averaging, but in some cases they compute a sum. 
+#### Some notes about nco.
+The ncra and ncwa commands are mostly used for averaging, but in some cases they compute a sum.
 Here are some alternative commands with ncra and ncwa using the -y op_typ flag that can be done within LIVVkit:
 * avg returns time average
 * min time min

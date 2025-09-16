@@ -121,13 +121,18 @@ def gen_file_list_old(
     mode: str,
 ):
     var_files = []
-    _fcn_names = ["formula", "+", "-", "/", "*", "^", "sum", "diff"]
-    _fcn_filt = lambda _var: _var not in _fcn_names
-    var_file = lambda _var, mode, _sea: config["file_patterns"][overs].format(
-        _var=_var,
-        season=_sea,
-        mode=mode,
-    )
+
+    def _fcn_filt(_var):
+        _fcn_names = ["formula", "+", "-", "/", "*", "^", "sum", "diff"]
+        return _var not in _fcn_names
+
+    def var_file(_var, _mode, _sea):
+        return config["file_patterns"][overs].format(
+            _var=_var,
+            season=_sea,
+            mode=_mode,
+        )
+
     if isinstance(var_name, str) and isinstance(sea, str):
         var_files = [
             Path(
@@ -214,8 +219,10 @@ def gen_file_list(
     cycle: str,
 ):
     var_files = []
-    _fcn_names = ["formula", "+", "-", "/", "*", "^", "sum", "diff"]
-    _fcn_filt = lambda _var: _var not in _fcn_names
+
+    def _fcn_filt(_var):
+        _fcn_names = ["formula", "+", "-", "/", "*", "^", "sum", "diff"]
+        return _var not in _fcn_names
 
     # File patterns
     # "dset_a": "{_var}_{icesheet}_{season}_{sea_s}_{sea_e}_climo.nc"
@@ -300,7 +307,7 @@ def load_obs(config, sea="ANN", mode="climoS", single_ds=None, expect_one_time=T
 
         try:
             obs_data[overs] = xr.open_mfdataset(files[overs]).squeeze()
-        except (xr.MergeError, ValueError) as err:
+        except (xr.MergeError, ValueError):
             if isinstance(files[overs], Path):
                 obs_data[overs] = xr.open_dataset(files[overs]).squeeze()
             else:
@@ -326,13 +333,14 @@ def gen_file_list_timeseries(
     overs: str,
 ):
     var_files = []
-    _fcn_names = ["formula", "+", "-", "/", "*", "^", "sum", "diff"]
-    _fcn_filt = lambda _var: _var not in _fcn_names
+
+    def _fcn_filt(_var):
+        _fcn_names = ["formula", "+", "-", "/", "*", "^", "sum", "diff"]
+        return _var not in _fcn_names
 
     # File patterns
     # "dset_a": "{_var}_{icesheet}_{season}_{sea_s}_{sea_e}_climo.nc"
 
-    isheet = config.get("icesheet", "gis")
     clim_years = config.get("clim_years", None)
 
     clim_years_default = {"year_s": None, "year_e": None}
@@ -375,7 +383,6 @@ def load_timeseries_data(config):
     obs_data = {}
 
     in_dirs = config["timeseries_dirs"]
-    in_file_patterns = config["ts_file_patterns"]
 
     for overs in in_dirs:
         files[overs] = []
@@ -387,7 +394,7 @@ def load_timeseries_data(config):
 
         try:
             obs_data[overs] = xr.open_mfdataset(files[overs]).squeeze()
-        except (xr.MergeError, ValueError) as err:
+        except (xr.MergeError, ValueError):
             if isinstance(files[overs], Path):
                 obs_data[overs] = xr.open_dataset(files[overs]).squeeze()
             else:
@@ -672,9 +679,10 @@ def compute_clevs(
         Lower, upper bounds for contouring
 
     """
-    _compress = lambda inarr: (
-        inarr.compressed() if isinstance(inarr, np.ma.masked_array) else inarr
-    )
+
+    def _compress(inarr):
+        return inarr.compressed() if isinstance(inarr, np.ma.masked_array) else inarr
+
     if keys is None:
         keys = [_key for _key in data]
 

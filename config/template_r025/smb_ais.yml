@@ -20,7 +20,7 @@ Surface_Mass_Balance_AIS:
 
   # Some of the legacy SMB scripts have the ability to have lat/lon, eleveation, and topography
   # split into multiple files. Effectively these are all the same within the new livvkit post-processing
-  # workflow, but have not been changed for the legacy code yet 
+  # workflow, but have not been changed for the legacy code yet
   latlon: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
   elevation: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
   topo: CASE_OUT_DIR/CASE_ID.ANN_mean.nc
@@ -38,11 +38,11 @@ Surface_Mass_Balance_AIS:
   # Future location for pre-processing observations to model gridded data for AIS
   preprocess: []
 
-  # Human readable names for the datasets, for comparison to second 
+  # Human readable names for the datasets, for comparison to second
   # obs / reanalysis dataset add dset_b definitions
   dataset_names: { model: ELM, dset_a: RACMO 2.4 }
 
-  # Human readable names for the datasets, for comparison to second 
+  # Human readable names for the datasets, for comparison to second
   # obs / reanalysis dataset add dset_b definitions
   clim_years:
     dset_a: { year_s: 1980, year_e: 2020 }
@@ -88,7 +88,7 @@ Surface_Mass_Balance_AIS:
     { dset_a: "{_var}_{icesheet}_{season}_{sea_s}_{sea_e}_climo.nc" }
 
 
-  # Locations for mask files, since model is remapped to `dset_a's` grid, 
+  # Locations for mask files, since model is remapped to `dset_a's` grid,
   # the model: ... file is for this grid, while model_native is for the
   # model's grid (e.g. r025, r05, etc.)
   masks:

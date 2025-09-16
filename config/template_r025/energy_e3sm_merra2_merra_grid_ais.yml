@@ -11,7 +11,7 @@ Energy_Balance_MERRA2_AIS:
   climo_remap: CASE_OUT_DIR/remap/CASE_ID.{clim}_mean_merra2.nc
   lnd_climo: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_merra2.nc
   glc_surf: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_merra2.nc
-  
+
   latlon: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_merra2.nc
   elevation: CASE_OUT_DIR/remap/CASE_ID.ANN_mean_merra2.nc
   latv: lat
