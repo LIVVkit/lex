@@ -67,7 +67,7 @@ option.
 
 For example, to run the minimal example extension, place the output
 website in the `vv_test` directory, and serve the output
-website you'd run this command:
+website you\'d run this command:
 
 ```bash
 $ livv -V config/example/example.yml -o vv_test -s
@@ -82,7 +82,7 @@ the YAML configuration files so that `livv` can find the required files.
 Likewise, you can also apply these analyses to any new model run[^2] by
 adjusting the paths to point to your model run.
 
-## Running cases on PM-CPU
+## Running existing cases on PM-CPU
 
 The `lex/run_livv.sh` script will run all the currently
 available analyses on pm-cpu for a particular case, e.g.:
@@ -100,7 +100,12 @@ $ cd lex
 $ sbatch run_lex_pm-cpu.sbatch
 ```
 
-## Performing post-processing on a single time series ELM h0 output
+## Running new cases on PM-CPU
+
+### Generate a single timeseries file from ELM h0 outputs
+- `ncrcat -v topo,landfrac,QSNOFRZ,FSRND,FSRVD,FSDSVD,FSDSND,EFLX_LH_TOT,FIRA,FLDS,FSA,FSDS,FSH,QICE,QRUNOFF,QSNOMELT,QSOIL,RAIN,SNOW,TSA elm*h0*.nc -o ${CASE}.nc`
+
+### Perform post-processing on a single time series ELM h0 output
 - Edit the `lex/lex/postproc/e3sm/postproc.sbatch` batch file to mach the new run
 
     Key variables:
@@ -110,6 +115,8 @@ $ sbatch run_lex_pm-cpu.sbatch
     - `OUTDIR`: Scratch directory into which climatology files will be written, defaults to `${SCRATCH}/lex/data/e3sm/${OUTCASE}`
 - Run the post-processing script:
   - `cd lex/lex/postproc/e3sm; sbatch postproc.sbatch`
+
+**NB**: the `postproc.sbatch` script will create the configuration for your case (based on `OUTCASE` and `OUTDIR`), then run LIVVkit on it with `lex/run_livv.sh`
 
 ## Developing a custom extension
 
