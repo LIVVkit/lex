@@ -236,8 +236,7 @@ def main(args, config):
                 _ds, config["dataset_names"].get(f"{_ds}_native")
             )
             data_var_names.append(
-                f"{_name}: "
-                f"{lxc.parse_var_name(data_var[config_names[_ds]])}"
+                f"{_name}: {lxc.parse_var_name(data_var[config_names[_ds]])}"
             )
         data_var_names = ", ".join(data_var_names)
 
