@@ -5,6 +5,7 @@ Make a whole-run timeseries plot comparing model to obs.
 """
 
 import os
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import nc_time_axis  # noqa: F401
@@ -210,27 +211,35 @@ def main(args, config):
         for axis in axes:
             axis.grid(visible=True, ls="--", lw=0.5)
             axis.legend(fontsize=8)
-
-        _ = axes[0].set_title(config["dataset_names"]["model"])
+        _modelname = config["dataset_names"].get(
+            "model", config["dataset_names"].get("model_native")
+        )
+        _ = axes[0].set_title(_modelname)
         _ = axes[1].set_title(config["dataset_names"]["dset_a"])
         plt.tight_layout()
+        if not Path(args.out).exists():
+            Path(args.out).mkdir(parents=True)
 
         img_file = os.path.join(
             args.out,
-            f"{lxc.img_file_prefix(config)}_{data_var['dset_a']}_timeseries.png",
+            f"{lxc.img_file_prefix(config)}_"
+            f"{data_var['title'].lower().replace(' ', '_')}_timeseries.png",
         )
         fig.savefig(img_file)
         img_link = os.path.join(
             "imgs", os.path.basename(args.out), os.path.basename(img_file)
         )
 
-        data_var_names = ", ".join(
-            [
-                f"{config['dataset_names'][_ds]}: "
+        data_var_names = []
+        for _ds in ts_data:
+            _name = config["dataset_names"].get(
+                _ds, config["dataset_names"].get(f"{_ds}_native")
+            )
+            data_var_names.append(
+                f"{_name}: "
                 f"{lxc.parse_var_name(data_var[config_names[_ds]])}"
-                for _ds in ts_data
-            ]
-        )
+            )
+        data_var_names = ", ".join(data_var_names)
 
         desc_comment = f"{data_var.get('comment', '')}"
 
