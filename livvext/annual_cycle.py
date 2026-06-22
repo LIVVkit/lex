@@ -20,6 +20,11 @@ Sign of component based on its contribution to total.
 """
 
 
+def one_axis(data_vars):
+    axis_test = [_var.get("ac_axis", 0) for _var in data_vars]
+    return len(set(axis_test)) == 1
+
+
 def main(args, config):
     """Load climatology for model and "observational" data sets, create plots."""
     if "climo_remap" in config:
@@ -35,7 +40,7 @@ def main(args, config):
 
     mons = [f"{mon:02d}" for mon in np.arange(0, 12) + 1]
 
-    if "dset_a" in config:
+    if "dset_a" in config.get("dataset_names"):
         obs_data = lxc.load_obs(
             config,
             sea=mons,
@@ -55,18 +60,34 @@ def main(args, config):
     # Going to be Model + number of obs datasets
     nplts = len(obs_data) + 1
     if nplts == 2:
-        fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
+        fig, axes0 = plt.subplots(
+            1, 2, figsize=(12, 5), sharey=True, dpi=config.get("img_dpi", 90)
+        )
     else:
-        fig, axes = plt.subplots(1, 1, figsize=(12, 12))
-        axes = [axes]
+        fig, axes0 = plt.subplots(1, 1, figsize=(8, 5), dpi=config.get("img_dpi", 90))
+        axes0 = [axes0]
 
     mons = np.arange(1, 12 + 1)
     obs_data_out = {}
     model_data_out = {}
+    plotted_lines = [None, None]
+
+    # Check that all data_vars are on the same ac_axis (default to 0)
+    if not one_axis(config["data_vars"]):
+        axes1 = [_axis.twinx() for _axis in axes0]
 
     for idx, data_var in enumerate(config["data_vars"]):
         logger.info(f"WORKING ON {data_var['title']}")
         _obs_in = {}
+        # Left or right axis (0 for left 1 for right, default to 0)
+        _axis = data_var.get("ac_axis", 0)
+
+        if _axis == 0:
+            axes = axes0
+            logger.info(f"USING AXIS 0 FOR {data_var['title']}")
+        else:
+            axes = axes1
+            logger.info(f"USING AXIS 1 FOR {data_var['title']}")
 
         aavg_config = data_var.get("aavg", None)
 
@@ -148,9 +169,22 @@ def main(args, config):
         model_data_out[data_var["title"]] = _model_plt
 
         var_label = f" {data_var['title']}"
-        axes[0].plot(mons, _model_plt, label=var_label, color=color, marker=".", lw=lw)
-        if _obs_plt:
-            axes[1].plot(
+        if not one_axis(config["data_vars"]):
+            if data_var.get("ac_axis", 0) == 0:
+                var_label += " (L)"
+            else:
+                var_label += " (R)"
+
+        _lin0 = axes[0].plot(
+            mons, _model_plt, label=var_label, color=color, marker=".", lw=lw
+        )
+        if plotted_lines[0] is None:
+            plotted_lines[0] = _lin0
+        else:
+            plotted_lines[0] += _lin0
+
+        if _obs_plt is not None:
+            _lin1 = axes[1].plot(
                 mons,
                 _obs_plt.squeeze(),
                 label=var_label,
@@ -158,6 +192,11 @@ def main(args, config):
                 marker=".",
                 lw=lw,
             )
+            if plotted_lines[1] is None:
+                plotted_lines[1] = _lin1
+            else:
+                plotted_lines[1] += _lin1
+
         logger.info(f"DONE - WORKING ON {data_var['title']}")
 
     model_data_out["month"] = np.arange(1, 12 + 1)
@@ -182,17 +221,25 @@ def main(args, config):
                 f"{config['dataset_names']['dset_a'].replace(' ', '_').replace('.', '_')}.csv",
             )
         )
-
-    if _aavg_units == "":
-        axes[0].set_ylabel(f"[{config['units']}]")
+    if not one_axis(config["data_vars"]):
+        _ax0 = [axes0[0], axes1[0]]
     else:
-        axes[0].set_ylabel(f"[{_aavg_units}]")
-    for axis in axes:
+        _ax0 = [axes0[0]]
+
+    for _ax in _ax0:
+        if _aavg_units == "":
+            _units = config.get("units", data_var.get("units", None))
+            _ax.set_ylabel(f"[{_units}]")
+        else:
+            _ax.set_ylabel(f"[{_aavg_units}]")
+
+    for _ix, axis in enumerate(axes):
         axis.grid(visible=True, ls="--", lw=0.5)
 
         axis.set_xlabel("Month")
         axis.set_xticks(mons, lxc.MON_NAMES)
-        axis.legend(fontsize=8)
+        _labels = [_line.get_label() for _line in plotted_lines[_ix]]
+        axis.legend(plotted_lines[_ix], _labels, fontsize=8)
 
     _ = axes[0].set_title(config["dataset_names"]["model"])
     if len(axes) > 1:

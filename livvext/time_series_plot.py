@@ -170,7 +170,7 @@ def main(args, config):
         obs_trends = {}
         for _dset in ts_data:
             if "model" not in _dset:
-                obs_trends[_dset] = compute_trend(ts_data[_dset].time, _obs_plt)
+                obs_trends[_dset] = compute_trend(ts_data[_dset].time, _obs_plt[_dset])
 
         nplts = len(_obs_plt) + 1
         _ncols = np.ceil(np.sqrt(nplts))

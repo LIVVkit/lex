@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import xarray as xr
+from loguru import logger
 from cartopy import crs as ccrs
 from cartopy import feature as cfeature
 from livvkit import elements as el
