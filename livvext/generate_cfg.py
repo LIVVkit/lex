@@ -9,7 +9,7 @@ import mache
 import livvext
 
 ALL_SHEETS = "gis,ais"
-ALL_SETS = "cmb,smb,energy_racmo,energy_era5,energy_merra2,energy_ceres"
+ALL_SETS = "cmb,smb,snow,energy_racmo,energy_era5,energy_merra2,energy_ceres"
 
 
 def args():
@@ -63,7 +63,7 @@ def args():
         type=str,
         default="all",
         help=(
-            "Analysis sets to run: cmb, smb, energy_racmo, energy_era5, "
+            "Analysis sets to run: cmb, smb, snow, energy_racmo, energy_era5, "
             "energy_merra2, energy_ceres, or all to run all available"
         ),
     )
