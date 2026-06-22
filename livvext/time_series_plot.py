@@ -181,7 +181,11 @@ def main(args, config):
             figsize = (12, 5)
 
         fig, axes = plt.subplots(
-            nrows=int(_nrows), ncols=int(_ncols), figsize=figsize, sharey=True
+            nrows=int(_nrows),
+            ncols=int(_ncols),
+            figsize=figsize,
+            sharey=True,
+            dpi=config.get("img_dpi", 90),
         )
 
         if nplts > 1:
@@ -209,13 +213,13 @@ def main(args, config):
             ls="--",
         )
 
-        axes[0].set_xlabel("Model Time")
+        axes[0].set_xlabel("Model Time [year]")
 
         for obix, _dset in enumerate(_obs_plt):
             # Plot obs time series
             axes[obix + 1].plot(
                 ts_data[_dset].time,
-                _obs_plt.squeeze(),
+                _obs_plt[_dset].squeeze(),
                 label=var_label,
                 color=color,
                 lw=lw,
@@ -255,10 +259,11 @@ def main(args, config):
         if not Path(args.out).exists():
             Path(args.out).mkdir(parents=True)
 
+        ext = config.get("img_extn", "png")
         img_file = os.path.join(
             args.out,
             f"{lxc.img_file_prefix(config)}_"
-            f"{data_var['title'].lower().replace(' ', '_')}_timeseries.png",
+            f"{data_var['title'].lower().replace(' ', '_')}_timeseries.{ext}",
         )
         fig.savefig(img_file)
         img_link = os.path.join(

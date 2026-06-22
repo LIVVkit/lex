@@ -133,7 +133,7 @@ def annotate_plot(
         )
 
 
-def get_figure(n_dsets, proj=None, icesheet="gis"):
+def get_figure(n_dsets, proj=None, icesheet="gis", config={}):
     """Set up figure based on number of datasets to be plotted."""
     fig_size = {
         "gis": {3: (10, 10), 2: (10, 8), 1: (7, 10)},
@@ -149,7 +149,9 @@ def get_figure(n_dsets, proj=None, icesheet="gis"):
         elif icesheet == "ais":
             proj = ccrs.SouthPolarStereo(central_longitude=0)
 
-    fig = plt.figure(figsize=fig_size[icesheet][n_dsets], dpi=90)
+    _dpi = config.get("img_dpi", 90)
+    logger.info(f"CREATING FIGURE WITH SIZE {fig_size[icesheet][n_dsets]} DPI={_dpi}")
+    fig = plt.figure(figsize=fig_size[icesheet][n_dsets], dpi=_dpi)
 
     if n_dsets == 3:
         axes = [fig.add_subplot(2, 3, i + 1, projection=proj) for i in range(6)]
@@ -257,6 +259,7 @@ def main(args, config, sea="ANN"):
 
     diff_names = []
     dsets = list(config["dataset_names"])
+    logger.info(f"DSETS TO PLOT {dsets}")
     dsets_to_plot = [_dset for _dset in dsets if "remap" not in _dset]
     n_dsets_to_plot = len(dsets_to_plot)
 
@@ -370,7 +373,9 @@ def main(args, config, sea="ANN"):
         else:
             raise NotImplementedError(f"ICESHEET {icesheet} NOT FOUND USE ais / gis")
 
-        fig, axes, _ = get_figure(n_dsets_to_plot, proj, icesheet=icesheet)
+        fig, axes, _ = get_figure(
+            n_dsets_to_plot, proj, icesheet=icesheet, config=config
+        )
 
         for _vers in _plt_data:
             try:
@@ -502,10 +507,10 @@ def main(args, config, sea="ANN"):
                     _cfd, fig, axes[-1], _units, ndsets=n_dsets_to_plot, cbar_span=False
                 )
         plt.tight_layout()
-
+        ext = config.get("img_extn", "png")
         img_file = os.path.join(
             args.out,
-            f"{lxc.img_file_prefix(config)}_{data_var['title'].replace(' ', '_')}_{sea}.png",
+            f"{lxc.img_file_prefix(config)}_{data_var['title'].replace(' ', '_')}_{sea}.{ext}",
         )
         fig.savefig(img_file)
         img_link = os.path.join(

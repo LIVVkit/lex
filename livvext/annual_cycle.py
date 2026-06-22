@@ -246,9 +246,9 @@ def main(args, config):
         _ = axes[1].set_title(config["dataset_names"]["dset_a"])
 
     plt.tight_layout()
-
+    ext = config.get("img_extn", "png")
     img_file = os.path.join(
-        args.out, f"{lxc.img_file_prefix(config)}_components_annual_cycle.png"
+        args.out, f"{lxc.img_file_prefix(config)}_components_annual_cycle.{ext}"
     )
     fig.savefig(img_file)
     img_link = os.path.join(
