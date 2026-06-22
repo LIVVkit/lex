@@ -46,6 +46,15 @@ common_energy: &common_energy
   cmap: plasma
   cmap_diff: RdBu_r
 
+common_elm: &common_elm
+  dataset_names: { model: ELM }
+  timeseries_dirs:
+    model: "{{ dir_ts_native }}"
+  ts_file_patterns:
+    model: "{_var}_{year_s:04d}01_{year_e:04d}12.nc"
+  masks:
+    model: /global/cfs/cdirs/e3sm/diagnostics/livvkit_data/grids/msk_{icesheet}_rcm_r05.nc
+
 common_racmo: &common_racmo
   clim_years:
     dset_a: { year_s: 1980, year_e: 2020 }
@@ -126,6 +135,18 @@ common_ceres: &common_ceres
     dset_a: {{ livvproj_dir }}/grids/msk_{icesheet}_r025_remap_cmip6.traave.nc
     model_remap: {{ livvproj_dir }}/grids/msk_{icesheet}_r025_remap_cmip6.traave.nc
     model_native: {{ livvproj_dir }}/grids/msk_{icesheet}_rcm_r05.nc
+
+common_modis: &common_modis
+  climo_remap: {{ dir_native }}/{{ case_id }}_{clim}_{sea_s}_{sea_e}_climo.nc
+  dataset_names: {model: 'ELM', dset_a: MODIS/Terra}
+  scales: {model: 100, dset_a: 1}
+  clim_years:
+    dset_a: { year_s: 2001, year_e: 2025}
+  in_dirs: {dset_a: /global/cfs/cdirs/e3sm/zender/mod10cm/rgr/}
+  file_patterns: {dset_a: 'mod10cm_{season}_{sea_s}_{sea_e}_climo.nc'}
+  masks:
+    dset_a: /global/cfs/cdirs/e3sm/diagnostics/livvkit_data/grids/msk_{icesheet}_rcm_r05.nc
+    model: /global/cfs/cdirs/e3sm/diagnostics/livvkit_data/grids/msk_{icesheet}_rcm_r05.nc
 
 common_racmo_gis: &common_racmo_gis
   climo_remap: {{ dir_racmo_gis }}/{{ case_id }}_{clim}_{sea_s}_{sea_e}_climo.nc
