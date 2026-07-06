@@ -80,41 +80,99 @@ def check_longitude(data, lon_coord="lon"):
     return _data
 
 
-def get_season_bounds(season, year_s, year_e):
+def get_season_bounds(season, year_s, year_e, mon_s=None, mon_e=None):
     """Determine season bounds for climatology files."""
     _seasons = {
-        "DJF": (1, 12),
+        "DJF": (12, 2),
         "MAM": (3, 5),
         "JJA": (6, 8),
         "SON": (9, 11),
+        "JFM": (1, 3),
+        "AMJ": (4, 6),
+        "JAS": (7, 9),
+        "OND": (10, 12),
         "ANN": (1, 12),
     }
+    if mon_s is not None and mon_e is None:
+        mon_e = (mon_s + 10) % 12 + 1
+    if mon_e is not None and mon_s is None:
+        mon_s = (mon_e % 12) + 1
+
+    if mon_s is None and mon_e is None:
+        mon_s = 1
+        mon_e = 12
+
+    # Borrowing from Charlie Zender's ncclimo
+    yyyymm_first = -1
+    yyyymm_last = -1
+
+    mth_idx = mon_s
+    yr_idx = year_s
 
     if season in _seasons:
-        _lb, _ub = _seasons[season]
-        _lb = f"{_lb:02d}"
-        _ub = f"{_ub:02d}"
-    else:
-        # Assume "season" is a month
-        if isinstance(season, str):
-            if len(season) == 1:
-                try:
-                    _lb = f"{int(season):02d}"
-                    _ub = f"{int(season):02d}"
-                except (ValueError, TypeError) as _err:
-                    logger.error(f"UNKNOWN SEASON TYPE: {season}")
-                    raise (_err)
+        sea_s, sea_e = _seasons[season]
+        while True:
+            yyyymm_crr = yr_idx * 100 + mth_idx
+            month_in_season = False
+            if sea_s <= sea_e:
+                # season doesn't span years e.g. MAM, OND
+                if (mth_idx >= sea_s) and (mth_idx <= sea_e):
+                    month_in_season = True
             else:
-                _lb = season
-                _ub = season
-        elif isinstance(season, int):
-            _lb = f"{int(season):02d}"
-            _ub = f"{int(season):02d}"
+                # Season spans years (e.g. DJF)
+                if (mth_idx >= sea_s) or (mth_idx <= sea_e):
+                    month_in_season = True
+            if month_in_season:
+                if yyyymm_first < 0:
+                    yyyymm_first = yyyymm_crr
+                yyyymm_last = yyyymm_crr
+
+            if (mth_idx == mon_e) and (yr_idx == year_e):
+                # This is the last month available, break out of the loop and end
+                break
+
+            mth_idx += 1
+            if mth_idx > 12:
+                # start at Jan of the next year
+                mth_idx = 1
+                yr_idx += 1
+
+        year_first = yyyymm_first // 100
+        year_last = yyyymm_last // 100
+
+        month_first = yyyymm_first % 100
+        month_last = yyyymm_last % 100
+
+    else:
+        # Assume this "season" is a month
+        if isinstance(season, str):
+            try:
+                _mon = int(season)
+            except (ValueError, TypeError) as _err:
+                logger.error(f"UNKNOWN SEASON TYPE: {season}")
+                raise (_err)
+
+        elif isinstance(season, int) or isinstance(season, float):
+            _mon = int(season)
         else:
             logger.error(f"UNKNOWN SEASON TYPE: {season}")
 
-    bound_l = f"{year_s:04d}{_lb}"
-    bound_u = f"{year_e:04d}{_ub}"
+        if mon_s != 1 and mon_e != 12:
+            if _mon >= mon_s:
+                year_first = year_s
+                year_last = year_e - 1
+            else:
+                year_first = year_s + 1
+                year_last = year_e
+        else:
+            year_first = year_s
+            year_last = year_e
+
+        month_first = _mon
+        month_last = _mon
+
+    bound_l = f"{year_first:04d}{month_first:02d}"
+    bound_u = f"{year_last:04d}{month_last:02d}"
 
     return bound_l, bound_u
 
@@ -140,9 +198,16 @@ def proc_climo_file(config, file_tag, sea):
 
     """
     _filename = config[file_tag]
+    mon_s = config.get("mon_s", None)
+    mon_e = config.get("mon_e", None)
+
     if "{sea_s}" in _filename:
         sea_s, sea_e = get_season_bounds(
-            sea, config.get("year_s", None), config.get("year_e", None)
+            sea,
+            config.get("year_s", None),
+            config.get("year_e", None),
+            mon_s,
+            mon_e,
         )
         if isinstance(sea, int):
             sea = f"{sea:02d}"
