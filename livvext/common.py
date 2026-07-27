@@ -232,6 +232,32 @@ def get_cycle(sea):
 
 
 def var_filename_format(file_pattern, _var, isheet, _sea, year_s, year_e, sep="_"):
+    """
+    Fill in a LIVVext defined string template for a particular variable, season, and run.
+
+    Parameters
+    ----------
+    file_pattern : str
+        Filename template with spots for variable, icesheet, and season start / end
+    _var : str
+        Model or observational field name
+    isheet : str
+       Icesheet name (gis or ais)
+    _sea : str
+        Season name or month number (e.g. ANN, DJF,..., '01' or 1)
+    year_s : int
+        Start year of climatology
+    year_e : _type_
+        End year of climatology
+    sep : str, optional
+        Separator within the template, if defined. By default "_"
+
+    Returns
+    -------
+    str
+        Formatted filename
+
+    """
     sea_s, sea_e = get_season_bounds(_sea, year_s, year_e)
     if isinstance(_sea, int):
         season = f"{_sea:02d}"
@@ -317,7 +343,34 @@ def gen_file_list(
 
 
 def load_obs(config, sea="ANN", mode="climoS", single_ds=None, expect_one_time=True):
-    """ """
+    """
+    Load observational (or reanalysis) data.
+
+    Parameters
+    ----------
+    config : dict
+        LIVVext configuratrion dictionary. Must have keys:
+            - `in_dirs`: the input directories each dataset
+            - `data_vars`: the variables to be analyzed
+            - `file_patterns`: the file match pattern for each dataset
+            - `in_dirs`: Absolute path to directory for each dataset
+            - `clim_years`: Start and end year for climatology
+            - `icesheet`: Icesheet identifier (optional, defaults to gis)
+    sea : str, optional
+        Season or month (e.g. ANN, DJF, '01', 1), by default "ANN"
+    mode : str, optional
+        Climatology mode, for sum (climoS), average (climoA), by default "climoS"
+    single_ds : str, optional
+        Load only one dataset, by default None, load all datasets in `config["in_dirs"]`
+    expect_one_time : bool, optional
+        Assume dataset has a single time per file, by default True
+
+    Returns
+    -------
+    dict[`xr.Dataset`]
+        Dictionary of `xarray.Datasets`, one for each dataset in `config["in_dirs"]`.
+
+    """
     files = {}
     obs_data = {}
 

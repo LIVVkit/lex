@@ -21,6 +21,10 @@ Sign of component based on its contribution to total.
 
 
 def one_axis(data_vars):
+    """
+    Given a list of LIVVkit data_vars, check if all annual cycles should be plotted on
+    the same axis.
+    """
     axis_test = [_var.get("ac_axis", 0) for _var in data_vars]
     return len(set(axis_test)) == 1
 
