@@ -158,5 +158,14 @@ intersphinx = [
 
 ]
 theme = "readthedocs"
-privacy = ["PRIVATE:**.__*__", "PUBLIC:**.__init__", "PRIVATE:**.ipynb_checkpoints"]
-add-package = ["./livvext", "./livvext/smb", "./livvext/energy"]
+privacy = [
+    "PRIVATE:**.__*__",
+    "PUBLIC:**.__init__",
+    "PRIVATE:**.ipynb_checkpoints",
+]
+add-package = [
+    "./livvext",
+    "./livvext/smb",
+    "./livvext/energy",
+    "./livvext/snow",
+]

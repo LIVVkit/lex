@@ -45,7 +45,7 @@ DAYS_PER_SEASON = {
 }
 
 
-def img_file_prefix(config):
+def img_file_prefix(config: dict) -> str:
     """Convert the module name into a file prefix for the image output."""
     # Just use the filename for the top-level module
     # maybe in the future this is fancier...but not now
@@ -53,7 +53,7 @@ def img_file_prefix(config):
     return mod_name
 
 
-def check_longitude(data, lon_coord="lon"):
+def check_longitude(data: xr.Dataset | xr.DataArray, lon_coord: str = "lon"):
     """Check that longitudes are -180 - +180."""
     lon = data[lon_coord]
     _data = data
@@ -80,7 +80,13 @@ def check_longitude(data, lon_coord="lon"):
     return _data
 
 
-def get_season_bounds(season, year_s, year_e, mon_s=None, mon_e=None):
+def get_season_bounds(
+    season: str | int | float,
+    year_s: int,
+    year_e: int,
+    mon_s: int = None,
+    mon_e: int = None,
+) -> tuple[str]:
     """Determine season bounds for climatology files."""
     _seasons = {
         "DJF": (12, 2),
@@ -177,7 +183,7 @@ def get_season_bounds(season, year_s, year_e, mon_s=None, mon_e=None):
     return bound_l, bound_u
 
 
-def proc_climo_file(config, file_tag, sea):
+def proc_climo_file(config: dict, file_tag: str, sea: str) -> str:
     """
     Process the climatology file to maintain backward compatibility with standalone LEX.
 
@@ -278,7 +284,34 @@ def gen_file_list(
     overs: str,
     sea: list | tuple | str,
     cycle: str,
-):
+) -> list[Path]:
+    """
+    Generate a list of files to be loaded for a particular dataset climatology.
+
+    Parameters
+    ----------
+    config : dict
+        LIVVext configuratrion dictionary. Must have keys:
+            - `in_dirs`: the input directories each dataset
+            - `file_patterns`: the file match pattern for each dataset
+            - `in_dirs`: Absolute path to directory for each dataset
+            - `clim_years`: Start and end year for climatology
+            - `icesheet`: Icesheet identifier (optional, defaults to gis)
+    var_name : list | tuple | str
+        Name or list/tuple of names of fields to be loaded, each in a separate file
+    overs : str
+        Observation version (dset_a, dset_b, ..., or model)
+    sea : list | tuple | str
+        Season or list/tuple of seasons to be loaded
+    cycle : str
+        Climatology averaging period (e.g. ann, sea, mon)
+
+    Returns
+    -------
+    list[Path]
+        List of full file paths to be loaded
+
+    """
     var_files = []
 
     def _fcn_filt(_var):
@@ -420,6 +453,24 @@ def gen_file_list_timeseries(
     var_name: list | tuple | str,
     overs: str,
 ):
+    """
+    Similar to `gen_file_list` but for timeseries data. Generate list of files to load.
+
+    Parameters
+    ----------
+    config : dict
+        LIVVext configuratrion dictionary.
+    var_name : list | tuple | str
+        Field name or list/tuple of field names to be loaded
+    overs : str
+        "Observational" dataset version (e.g. dset_a, dset_b, ..., or model)
+
+    Returns
+    -------
+    list[Path]
+        List of absolute paths to input dataset files
+
+    """
     var_files = []
 
     def _fcn_filt(_var):
@@ -469,8 +520,25 @@ def gen_file_list_timeseries(
 
 
 @logger.catch
-def load_timeseries_data(config):
-    """Load data for timeseries."""
+def load_timeseries_data(config: dict):
+    """
+    Load data for timeseries.
+
+    Parameters
+    ----------
+    config : dict
+        LIVVext configuration dictionary. Should have keys:
+            - `timeseries_dirs`
+            - `data_vars`
+            - `dataset_names`
+            - Other keys as required by `get_file_list_timeseries`
+
+    Returns
+    -------
+    dict[`xr.Dataset`]
+        Dictionary of datasets for each dataset in `config["timeseries_dirs"]`
+
+    """
     files = {}
     obs_data = {}
 
@@ -509,7 +577,31 @@ def load_timeseries_data(config):
     return obs_data
 
 
-def parse_var(data_var, dataset, scale):
+def parse_var(
+    data_var: list | tuple | str, dataset: xr.Dataset, scale: float | int | str
+) -> xr.DataArray:
+    """
+    Parse a data_var formula or name.
+
+    Parameters
+    ----------
+    data_var : list | tuple | str
+        data_var definition, if a list or tuple, this is a formula for
+        computing a derived field, if a string, this is a native output
+        field from the dataset. See `livvext.utils.extract_ds` for more details.
+    dataset : xr.Dataset
+        Input xr.Dataset
+    scale : float | int | str
+        Scale the `data_var` field after computation by `scale`. Can be
+        numeric or a string representation (e.g. 1e-6, 32.5, or "365 * 24").
+        See `livvext.utils.eval_expr` for more details.
+
+    Returns
+    -------
+    `xr.DataArray`
+        Xarray DataArray of the field of intrest
+
+    """
     if isinstance(scale, (int, float)):
         _scale = scale
     else:
@@ -522,7 +614,21 @@ def parse_var(data_var, dataset, scale):
     return _vardata.squeeze() * _scale
 
 
-def parse_var_name(data_var):
+def parse_var_name(data_var: list | tuple | str) -> str:
+    """
+    Parse a LIVVext `data_var` formula or native netCDF field name string.
+
+    Parameters
+    ----------
+    data_var : list | tuple | str
+        LIVVext `data_var` formula if list or tuple, native output field name if string
+
+    Returns
+    -------
+    str
+        String representation of the output field or formula
+
+    """
     if isinstance(data_var, str):
         _out = data_var
     elif isinstance(data_var, (list, tuple)):
@@ -531,14 +637,14 @@ def parse_var_name(data_var):
 
 
 def area_avg(
-    data,
-    config,
-    area_file,
-    area_var,
-    mask_file=None,
-    mask_var=None,
-    sum_out=False,
-    land_only=False,
+    data: xr.DataArray | np.ndarray,
+    config: dict,
+    area_file: Path,
+    area_var: str,
+    mask_file: Path = None,
+    mask_var: str = None,
+    sum_out: bool = False,
+    land_only: bool = False,
 ):
     """
     Compute a masked and weighted area average of some field.
@@ -558,6 +664,11 @@ def area_avg(
     mask_var : str, optional
         Name of the netCDF variable which contains the ice sheet mask data, if not
         set, then use ``maskv`` from ``config``
+    sum_out: bool, optional
+        Return the weighted sum rather than average. Defualt is False
+    land_only: bool, optional
+        Return the average or sum over grid cells which are 100% land so no
+        ocean cells are included. Default is False
 
     Returns
     -------
@@ -627,8 +738,29 @@ def area_avg(
     return _avg, isheet_mask, area_maskice, _data
 
 
-def closest_points(model_x, model_y, obs_x, obs_y):
-    """Determine closest model points to set of observation x/y points."""
+def closest_points(
+    model_x: np.ndarray, model_y: np.ndarray, obs_x: np.ndarray, obs_y: np.ndarray
+) -> tuple[np.ndarray]:
+    """Determine closest model points to set of observation x/y points.
+
+    Parameters
+    ----------
+    model_x : np.ndarray
+        Model x coordinate array (lon)
+    model_y : np.ndarray
+        Model y coordinate array (lat)
+    obs_x : np.ndarray
+        Observation x locations (lon)
+    obs_y : np.ndarray
+        Observation y locations (lat)
+
+    Returns
+    -------
+    tuple[np.ndarray]
+        Array of closest points, Array of indicies for observations on the model mesh
+        (nobs, ny, nx)
+
+    """
     # All points in model domain; convert to radians for kd tree query below
     if model_x.ndim == 2:
         lon2d = model_x
@@ -698,6 +830,8 @@ def summarize_result(result):
     return summary
 
 
+# STUFF BELOW HERE IS PROBABLY UN-USED-------------------------------------------------
+# Should probably check and remove stuff that isn't needed anymore
 def annotate_plot(axis, color_field=None, label=None):
     """Add land / ocean, gridlines, colourbar."""
     axis.coastlines(linewidth=0.5)

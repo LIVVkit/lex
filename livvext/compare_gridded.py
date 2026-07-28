@@ -3,6 +3,7 @@
 """Compare up to three gridded datasets. Typically one "Model" and 1 or 2 "Observations" """
 
 import os
+import argparse
 
 import matplotlib.path as mpath
 import matplotlib.pyplot as plt
@@ -166,7 +167,7 @@ def get_figure(n_dsets, proj=None, icesheet="gis", config={}):
     return fig, axes, proj
 
 
-def main(args, config, sea="ANN"):
+def main(args: argparse.Namespace, config: dict, sea: str | int = "ANN"):
     """
     Generate comparison plots for a particular season.
 
@@ -188,7 +189,8 @@ def main(args, config, sea="ANN"):
     Raises
     ------
     NotImplementedError
-        _description_
+        When an icesheet is asked for that is not defined (Antarctica or Greenland)
+
     """
     units = config.get("units", "UNITS UNKNOWN")
     icesheet = config.get("icesheet", "gis").lower()
