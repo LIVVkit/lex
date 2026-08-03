@@ -24,6 +24,8 @@ from numpy import ma
 import livvext.utils as lxu
 
 TFORM = ccrs.PlateCarree()
+"""Transform for data on a regular lat / lon grid."""
+
 SEASON_NAME = {
     "ANN": "annual",
     "DJF": "winter",
@@ -31,8 +33,14 @@ SEASON_NAME = {
     "MAM": "spring",
     "SON": "autumn",
 }
+"""Map seasonal (MMM) abbreviations to human-readable names for seasons."""
+
 MON_NAMES = [dt.datetime(2000, mon, 1).strftime("%b") for mon in range(1, 12 + 1)]
+"""List of short month names (Jan, Feb, ...)."""
+
 DAYS_PER_MONTH = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
+"""`np.ndarray` of number of days per month."""
+
 DAYS_PER_SEASON = {
     "DJF": (31 + 31 + 28),
     "MAM": (31 + 30 + 31),
@@ -43,6 +51,7 @@ DAYS_PER_SEASON = {
     "JAS": (31 + 31 + 30),
     "OND": (31 + 30 + 31),
 }
+"""Map seasonal (MMM) abbreviations to number of days per season."""
 
 
 def img_file_prefix(config: dict) -> str:
@@ -243,24 +252,24 @@ def var_filename_format(file_pattern, _var, isheet, _sea, year_s, year_e, sep="_
 
     Parameters
     ----------
-    file_pattern : str
+    file_pattern : `str`
         Filename template with spots for variable, icesheet, and season start / end
-    _var : str
+    _var : `str`
         Model or observational field name
-    isheet : str
+    isheet : `str`
        Icesheet name (gis or ais)
-    _sea : str
+    _sea : `str`
         Season name or month number (e.g. ANN, DJF,..., '01' or 1)
-    year_s : int
+    year_s : `int`
         Start year of climatology
-    year_e : _type_
+    year_e : `int`
         End year of climatology
-    sep : str, optional
+    sep : `str`, optional
         Separator within the template, if defined. By default "_"
 
     Returns
     -------
-    str
+    `str`
         Formatted filename
 
     """
@@ -292,11 +301,10 @@ def gen_file_list(
     ----------
     config : dict
         LIVVext configuratrion dictionary. Must have keys:
-            - `in_dirs`: the input directories each dataset
-            - `file_patterns`: the file match pattern for each dataset
-            - `in_dirs`: Absolute path to directory for each dataset
-            - `clim_years`: Start and end year for climatology
-            - `icesheet`: Icesheet identifier (optional, defaults to gis)
+            - ``file_patterns``: the file match pattern for each dataset
+            - ``in_dirs``: Absolute path to directory for each dataset
+            - ``clim_years``: Start and end year for climatology
+            - ``icesheet``: Icesheet identifier (optional, defaults to gis)
     var_name : list | tuple | str
         Name or list/tuple of names of fields to be loaded, each in a separate file
     overs : str
@@ -383,25 +391,25 @@ def load_obs(config, sea="ANN", mode="climoS", single_ds=None, expect_one_time=T
     ----------
     config : dict
         LIVVext configuratrion dictionary. Must have keys:
-            - `in_dirs`: the input directories each dataset
-            - `data_vars`: the variables to be analyzed
-            - `file_patterns`: the file match pattern for each dataset
-            - `in_dirs`: Absolute path to directory for each dataset
-            - `clim_years`: Start and end year for climatology
-            - `icesheet`: Icesheet identifier (optional, defaults to gis)
+            - ``in_dirs``: the input directories each dataset
+            - ``data_vars``: the variables to be analyzed
+            - ``file_patterns``: the file match pattern for each dataset
+            - ``in_dirs``: Absolute path to directory for each dataset
+            - ``clim_years``: Start and end year for climatology
+            - ``icesheet``: Icesheet identifier (optional, defaults to gis)
     sea : str, optional
         Season or month (e.g. ANN, DJF, '01', 1), by default "ANN"
     mode : str, optional
         Climatology mode, for sum (climoS), average (climoA), by default "climoS"
     single_ds : str, optional
-        Load only one dataset, by default None, load all datasets in `config["in_dirs"]`
+        Load only one dataset, by default None, load all datasets in ``config["in_dirs"]``
     expect_one_time : bool, optional
         Assume dataset has a single time per file, by default True
 
     Returns
     -------
     dict[`xr.Dataset`]
-        Dictionary of `xarray.Datasets`, one for each dataset in `config["in_dirs"]`.
+        Dictionary of `xr.Dataset` s, one for each dataset in ``config["in_dirs"]``.
 
     """
     files = {}
@@ -526,17 +534,17 @@ def load_timeseries_data(config: dict):
 
     Parameters
     ----------
-    config : dict
+    config : `dict`
         LIVVext configuration dictionary. Should have keys:
-            - `timeseries_dirs`
-            - `data_vars`
-            - `dataset_names`
-            - Other keys as required by `get_file_list_timeseries`
+            - ``timeseries_dirs``
+            - ``data_vars``
+            - ``dataset_names``
+            - Other keys as required by ``get_file_list_timeseries``
 
     Returns
     -------
     dict[`xr.Dataset`]
-        Dictionary of datasets for each dataset in `config["timeseries_dirs"]`
+        Dictionary of datasets for each dataset in ``config["timeseries_dirs"]``
 
     """
     files = {}
@@ -585,14 +593,14 @@ def parse_var(
 
     Parameters
     ----------
-    data_var : list | tuple | str
+    data_var : `list` | `tuple` | `str`
         data_var definition, if a list or tuple, this is a formula for
         computing a derived field, if a string, this is a native output
         field from the dataset. See `livvext.utils.extract_ds` for more details.
-    dataset : xr.Dataset
-        Input xr.Dataset
-    scale : float | int | str
-        Scale the `data_var` field after computation by `scale`. Can be
+    dataset : `xr.Dataset`
+        Input `xr.Dataset`
+    scale : `float` | `int` | `str`
+        Scale the ``data_var`` field after computation by ``scale``. Can be
         numeric or a string representation (e.g. 1e-6, 32.5, or "365 * 24").
         See `livvext.utils.eval_expr` for more details.
 
@@ -616,16 +624,16 @@ def parse_var(
 
 def parse_var_name(data_var: list | tuple | str) -> str:
     """
-    Parse a LIVVext `data_var` formula or native netCDF field name string.
+    Parse a LIVVext ``data_var`` formula or native netCDF field name string.
 
     Parameters
     ----------
-    data_var : list | tuple | str
-        LIVVext `data_var` formula if list or tuple, native output field name if string
+    data_var : `list` | `tuple` | `str`
+        LIVVext ``data_var`` formula if list or tuple, native output field name if string
 
     Returns
     -------
-    str
+    `str`
         String representation of the output field or formula
 
     """
@@ -745,13 +753,13 @@ def closest_points(
 
     Parameters
     ----------
-    model_x : np.ndarray
+    model_x : `np.ndarray`
         Model x coordinate array (lon)
-    model_y : np.ndarray
+    model_y : `np.ndarray`
         Model y coordinate array (lat)
-    obs_x : np.ndarray
+    obs_x : `np.ndarray`
         Observation x locations (lon)
-    obs_y : np.ndarray
+    obs_y : `np.ndarray`
         Observation y locations (lat)
 
     Returns

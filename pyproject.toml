@@ -155,6 +155,7 @@ intersphinx = [
     "https://xarray.pydata.org/en/latest/objects.inv",
     "https://docs.pybtex.org/objects.inv",
     "https://livvkit.github.io/Docs/objects.inv",
+    "http://docs.scipy.org/doc/numpy/objects.inv",
 
 ]
 theme = "readthedocs"
