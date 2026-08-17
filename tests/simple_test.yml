@@ -7,3 +7,9 @@ ExtensionTest:
     module: tests/extension_simple.py
     description: A minimal LIVVkit extensions test.
     meta: *meta
+
+BadExtensionTest:
+    module: tests/extension_simple.py
+    description: A minimal LIVVkit extensions test.
+    throw_exception: True
+    meta: *meta

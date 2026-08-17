@@ -3,12 +3,14 @@
 """Compare up to three gridded datasets. Typically one "Model" and 1 or 2 "Observations" """
 
 import os
+import argparse
 
 import matplotlib.path as mpath
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import xarray as xr
+from loguru import logger
 from cartopy import crs as ccrs
 from cartopy import feature as cfeature
 from livvkit import elements as el
@@ -132,7 +134,7 @@ def annotate_plot(
         )
 
 
-def get_figure(n_dsets, proj=None, icesheet="gis"):
+def get_figure(n_dsets, proj=None, icesheet="gis", config={}):
     """Set up figure based on number of datasets to be plotted."""
     fig_size = {
         "gis": {3: (10, 10), 2: (10, 8), 1: (7, 10)},
@@ -148,7 +150,9 @@ def get_figure(n_dsets, proj=None, icesheet="gis"):
         elif icesheet == "ais":
             proj = ccrs.SouthPolarStereo(central_longitude=0)
 
-    fig = plt.figure(figsize=fig_size[icesheet][n_dsets], dpi=90)
+    _dpi = config.get("img_dpi", 90)
+    logger.info(f"CREATING FIGURE WITH SIZE {fig_size[icesheet][n_dsets]} DPI={_dpi}")
+    fig = plt.figure(figsize=fig_size[icesheet][n_dsets], dpi=_dpi)
 
     if n_dsets == 3:
         axes = [fig.add_subplot(2, 3, i + 1, projection=proj) for i in range(6)]
@@ -163,7 +167,7 @@ def get_figure(n_dsets, proj=None, icesheet="gis"):
     return fig, axes, proj
 
 
-def main(args, config, sea="ANN"):
+def main(args: argparse.Namespace, config: dict, sea: str | int = "ANN"):
     """
     Generate comparison plots for a particular season.
 
@@ -185,7 +189,8 @@ def main(args, config, sea="ANN"):
     Raises
     ------
     NotImplementedError
-        _description_
+        When an icesheet is asked for that is not defined (Antarctica or Greenland)
+
     """
     units = config.get("units", "UNITS UNKNOWN")
     icesheet = config.get("icesheet", "gis").lower()
@@ -217,10 +222,23 @@ def main(args, config, sea="ANN"):
             **lxc.load_obs(config, sea, mode=mode),
         }
     else:
-        all_data = {
-            "model": xr.open_dataset(lxc.proc_climo_file(config, "climo_remap", sea)),
-            **lxc.load_obs(config, sea, mode=mode),
-        }
+        try:
+            all_data = {
+                **lxc.load_obs(config, sea, mode=mode),
+            }
+        except KeyError:
+            # Means there's no obs data, so just move on to model data
+            all_data = {}
+
+        if "climo_remap" in config:
+            all_data["model"] = xr.open_dataset(
+                lxc.proc_climo_file(config, "climo_remap", sea)
+            )
+        else:
+            all_data["model"] = xr.open_dataset(
+                lxc.proc_climo_file(config, "climo", sea)
+            )
+
     for _vers in all_data:
         all_data[_vers] = lxc.check_longitude(all_data[_vers])
 
@@ -243,6 +261,7 @@ def main(args, config, sea="ANN"):
 
     diff_names = []
     dsets = list(config["dataset_names"])
+    logger.info(f"DSETS TO PLOT {dsets}")
     dsets_to_plot = [_dset for _dset in dsets if "remap" not in _dset]
     n_dsets_to_plot = len(dsets_to_plot)
 
@@ -356,7 +375,9 @@ def main(args, config, sea="ANN"):
         else:
             raise NotImplementedError(f"ICESHEET {icesheet} NOT FOUND USE ais / gis")
 
-        fig, axes, _ = get_figure(n_dsets_to_plot, proj, icesheet=icesheet)
+        fig, axes, _ = get_figure(
+            n_dsets_to_plot, proj, icesheet=icesheet, config=config
+        )
 
         for _vers in _plt_data:
             try:
@@ -396,7 +417,7 @@ def main(args, config, sea="ANN"):
 
         _cmin_d = data_var.get("cmin_d", None)
         _cmax_d = data_var.get("cmax_d", None)
-        if _cmin_d is None or _cmax_d is None:
+        if (_cmin_d is None or _cmax_d is None) and diffs:
             cmin_d, cmax_d = lxc.compute_clevs(
                 data=diffs,
                 even=True,
@@ -479,17 +500,19 @@ def main(args, config, sea="ANN"):
                 cnrtxt=cnrtxt,
                 icesheet=icesheet,
             )
-        if n_dsets_to_plot == 3:
-            add_colorbar(_cfd, fig, axes[2 + n_dsets_to_plot], _units, ndsets)
-        else:
-            add_colorbar(
-                _cfd, fig, axes[-1], _units, ndsets=n_dsets_to_plot, cbar_span=False
-            )
-            plt.tight_layout()
-
+        if diff_names:
+            # Only add the difference colourbar when there's a diff field
+            if n_dsets_to_plot == 3:
+                add_colorbar(_cfd, fig, axes[2 + n_dsets_to_plot], _units, ndsets)
+            else:
+                add_colorbar(
+                    _cfd, fig, axes[-1], _units, ndsets=n_dsets_to_plot, cbar_span=False
+                )
+        plt.tight_layout()
+        ext = config.get("img_extn", "png")
         img_file = os.path.join(
             args.out,
-            f"{lxc.img_file_prefix(config)}_{data_var['title'].replace(' ', '_')}_{sea}.png",
+            f"{lxc.img_file_prefix(config)}_{data_var['title'].replace(' ', '_')}_{sea}.{ext}",
         )
         fig.savefig(img_file)
         img_link = os.path.join(
