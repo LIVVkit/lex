@@ -822,6 +822,10 @@ def summarize_result(result):
     status = "Success"
     if isinstance(result, livvkit.elements.Error):
         status = "Failure"
+    elif isinstance(result, livvkit.elements.CompositeElement):
+        _errs = [isinstance(_ele, livvkit.elements.Error) for _ele in result.elements]
+        if any(_errs):
+            status = "Failure"
 
     summary = LIVVDict()
     try:
