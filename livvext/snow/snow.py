@@ -129,7 +129,12 @@ def run(name, config):
     if timeseries_img:
         tabs["Timeseries"] = [el.Gallery("Figures", timeseries_img)]
 
-    ref_bib = utils.bib2html(config["references"])
+    if "references" in config:
+        ref_bib = utils.bib2html(config.get("references"))
+    elif "References" in config:
+        ref_bib = utils.bib2html(config.get("References"))
+    else:
+        ref_bib = " "
 
     ref_ele = el.RawHTML(
         " ".join(
